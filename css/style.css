@@ -1,0 +1,146 @@
+body {
+	background-color: #FAEBD7;
+	margin:1;
+	padding:1;
+	font-family: sans-serif;
+}
+h1{
+	color: darkblue;
+}
+hr{
+	height:2px;
+	border-width:10;
+	color:gray;
+	background-color:gray;
+}
+.form-style-2{
+	max-width: 500px;
+	padding: 20px 12px 10px 20px;
+	font: 13px Arial, Helvetica, sans-serif;
+	color: darkblue;
+}
+.form-style-2-heading{
+	font-weight: bold;
+	font-style: italic;
+	border-bottom: 2px solid #ddd;
+	margin-bottom: 20px;
+	font-size: 15px;
+	padding-bottom: 3px;
+	color: darkblue;
+}
+.form-style-2 label{
+	display: inline;
+	margin: 0px 0px 15px 0px;
+	color: darkblue;
+}
+.form-style-2 label > span{
+	width: 100px;
+	font-weight: bold;
+	float: left;
+	padding-top: 8px;
+	padding-right: 5px;
+}
+.form-style-2 span.required{
+	color:red;
+}
+.form-style-2 input.input-field{
+	width: 48%;	
+	margin-left: 20px;
+}
+
+.form-style-2 input.input-field{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: 1px solid #C2C2C2;
+	box-shadow: 1px 1px 4px #EBEBEB;
+	-moz-box-shadow: 1px 1px 4px #EBEBEB;
+	-webkit-box-shadow: 1px 1px 4px #EBEBEB;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	padding: 7px;
+	outline: none;
+}
+.form-style-2.input-field:focus{
+	border: 1px solid #0C0;
+}
+/*==================*/
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-gap: 10px;
+}
+
+.container>* {
+  border: 2px solid;
+  min-height : 100px
+  
+  /* center content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.itcontainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 3 columns */
+  grid-gap: 10px;
+}
+
+.itcontainer>* {
+  border: 2px solid;
+  min-height : 100px
+  
+  /* center content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.box {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid black;
+}
+
+.image {
+  display: inline-block;
+  padding: 10px;
+}
+
+@media (min-width: 600px) {
+  .wrapper {
+    flex-direction: row;
+  }
+  
+  .box {
+    width: auto;
+    flex-grow: 1;
+  }
+
+
+/*==================*/
+.error{
+	color: red;
+}
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem;
+	font-family: sans-serif;
+	font-style: normal;
+	font-weight: 100;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	color: darkblue;
+}

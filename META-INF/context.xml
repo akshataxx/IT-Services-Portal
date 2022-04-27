@@ -1,0 +1,12 @@
+<Context>
+    <Resource name="jdbc/issuedata"
+        auth="Container"
+        type="javax.sql.DataSource"
+        maxActive="100"
+    	maxIdle="30"
+    	maxWait="10000"
+        username="jdbcUserseng2050"
+		password="mypassword"
+        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+		url="jdbc:sqlserver://Localhost\SQLEXP:1433;databaseName=SENG2050"/>
+</Context>
