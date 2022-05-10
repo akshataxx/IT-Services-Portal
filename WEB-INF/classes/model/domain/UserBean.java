@@ -1,5 +1,7 @@
 package model.domain;
 
+import util.Preconditions;
+
 import java.util.*;
 
 public class UserBean implements DatabaseSerializable {
@@ -15,18 +17,20 @@ public class UserBean implements DatabaseSerializable {
 	private final List<NotificationBean> notifications;
 	private final List<IssueBean> issues;
 
-	public UserBean(UserRole role, String firstName, String surname) {
-		Objects.requireNonNull(role);
-		Objects.requireNonNull(firstName);
-		Objects.requireNonNull(surname);
+	public UserBean(UserRole role, String firstName, String lastName, String username, String password) {
+		Preconditions.validateNotNull(role);
+		Preconditions.validateNotNull(username);
+		Preconditions.validateNotNull(password);
+		Preconditions.validateNotNull(firstName);
+		Preconditions.validateNotNull(lastName);
 
 		this.uniqueId = UUID.randomUUID();
-		this.firstName = firstName.toLowerCase(Locale.ROOT);
-		this.surname = surname.toLowerCase(Locale.ROOT);
+		setUsername(username);
+		setPassword(password);
+		setFirstName(firstName);
+		setSurname(surname);
 		this.role = role;
 		this.email = null;
-		this.username = null;
-		this.password = null;
 		this.contactNo = null;
 
 		this.notifications = new ArrayList<>();
@@ -71,26 +75,36 @@ public class UserBean implements DatabaseSerializable {
 	}
 
 	public void setFirstName(String firstName) {
+		Preconditions.validateLength(firstName,35);
+		Preconditions.validateNotNull(firstName);
 		this.firstName = firstName.toLowerCase(Locale.ROOT);
 	}
 
 	public void setSurname(String surname) {
+		Preconditions.validateLength(surname,35);
+		Preconditions.validateNotNull(surname);
 		this.surname = surname.toLowerCase(Locale.ROOT);
 	}
 
 	public void setEmail(String email) {
+		Preconditions.validateLength(email,320);
 		this.email = email;
 	}
 
 	public void setUsername(String username) {
+		Preconditions.validateLength(username,20);
+		Preconditions.validateNotNull(username);
 		this.username = username;
 	}
 
 	public void setPassword(String password) {
+		Preconditions.validateLength(password,20);
+		Preconditions.validateNotNull(password);
 		this.password = password;
 	}
 
 	public void setContactNo(String contactNo) {
+		Preconditions.validateLength(contactNo,35);
 		this.contactNo = contactNo;
 	}
 
@@ -109,6 +123,14 @@ public class UserBean implements DatabaseSerializable {
 	public void addNotification(NotificationBean notification) {
 		Objects.requireNonNull(notification);
 		this.notifications.add(notification);
+	}
+
+	public NotificationBean getNotification(UUID uuid) {
+		for(NotificationBean notification : notifications) {
+			if(notification.getUniqueId().equals(uuid))
+				return notification;
+		}
+		return null;
 	}
 
 	public Collection<IssueBean> getIssues() {

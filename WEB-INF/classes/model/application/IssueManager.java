@@ -2,11 +2,8 @@ package model.application;
 
 import model.application.storage.StorageImplementation;
 import model.domain.IssueBean;
-import model.domain.SolutionBean;
-import model.domain.UserBean;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class IssueManager {
 
@@ -16,21 +13,23 @@ public class IssueManager {
         this.implementation = storageImplementation;
     }
 
-    public void acceptSolution(IssueBean issueBean, SolutionBean solutionBean) {
-
-    }
-
-    public void rejectSolution(IssueBean issueBean, SolutionBean solutionBean) {
-
-    }
-
     public void reportIssue(IssueBean issueBean) {
+        Objects.requireNonNull(issueBean);
         implementation.updateIssue(issueBean);
     }
 
-
     public Collection<IssueBean> getAllIssues() {
         return implementation.getAllIssues();
+    }
+
+    public Collection<IssueBean> getKnowledgeBase() {
+        List<IssueBean> knowledgeBase = new ArrayList<>();
+        for(IssueBean issueBean : getAllIssues()) {
+            if(issueBean.isInKnowledgeBase())
+                knowledgeBase.add(issueBean);
+        }
+
+        return Collections.unmodifiableList(knowledgeBase);
     }
 
     public IssueBean getIssueById(long uniqueId) {

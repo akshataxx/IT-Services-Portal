@@ -1,41 +1,53 @@
 package model.domain;
 
+import util.Preconditions;
+
 import java.util.Objects;
 import java.util.UUID;
 
-public class SolutionBean implements DatabaseSerializable {
+public class SolutionBean implements DatabaseSerializable, TextElement {
 
     private final UUID uniqueId;
     private final long solutionDate;
-    private final String resolutionDetails;
+    private String resolutionDetails;
     private SolutionState state;
     private final UserBean staffMember;
+    private final IssueBean issue;
 
-    public SolutionBean(String resolutionDetails, UserBean staffMember) {
+    public SolutionBean(String resolutionDetails, UserBean staffMember, IssueBean issue) {
         this.uniqueId = UUID.randomUUID();
         if(!staffMember.getRole().equals(UserRole.IT_STAFF))
             throw new IllegalArgumentException("Non IT staff making solution!");
         this.staffMember = staffMember;
-        Objects.requireNonNull(resolutionDetails);
         this.solutionDate = System.currentTimeMillis();
-        this.resolutionDetails = resolutionDetails;
+        setText(resolutionDetails);
         this.state = SolutionState.WAITING;
+        this.issue = issue;
     }
 
-    private SolutionBean(UUID uniqueId, long solutionDate, String resolutionDetails, SolutionState state, UserBean staffMember) {
+    private SolutionBean(UUID uniqueId, long solutionDate, String resolutionDetails, SolutionState state, UserBean staffMember, IssueBean issue) {
         this.uniqueId = uniqueId;
         this.solutionDate = solutionDate;
         this.resolutionDetails = resolutionDetails;
         this.state = state;
         this.staffMember = staffMember;
+        this.issue = issue;
     }
 
     public long getSolutionDate() {
         return solutionDate;
     }
 
-    public String getResolutionDetails() {
+    @Override
+    public String getText() {
         return resolutionDetails;
+    }
+
+    @Override
+    public void setText(String text) {
+        Preconditions.validateLength(text,2000);
+        Preconditions.validateNotNull(text);
+        this.resolutionDetails = text;
     }
 
     public SolutionState getState() {
@@ -44,8 +56,6 @@ public class SolutionBean implements DatabaseSerializable {
 
     public void setState(SolutionState state) {
         Objects.requireNonNull(state);
-        if(this.state==SolutionState.ACCEPTED)
-            throw new IllegalArgumentException("The solution is already accepted");
         this.state = state;
     }
 
@@ -53,11 +63,27 @@ public class SolutionBean implements DatabaseSerializable {
         return uniqueId;
     }
 
-    public UserBean getStaffMember() {
+    @Override
+    public UserBean getAuthor() {
         return staffMember;
     }
 
-    public static SolutionBean serialize(String uniqueId, long solutionDate, String resolutionDetails, String state, UserBean staffMember) throws SerializationException {
+    public void acceptSolution() {
+        setState(SolutionState.ACCEPTED);
+        issue.setState(IssueState.RESOLVED);
+        issue.setResolveDate(System.currentTimeMillis());
+    }
+
+    public void rejectSolution(String notificationTitle, String notificationComment) {
+        if(issue.isResolved())
+            throw new IllegalStateException("Issue has already been resolved");
+
+        setState(SolutionState.REJECTED);
+        issue.setState(IssueState.IN_PROGRESS);
+        this.staffMember.addNotification(new NotificationBean(notificationTitle,notificationComment,issue));
+    }
+
+    public static SolutionBean serialize(String uniqueId, long solutionDate, String resolutionDetails, String state, UserBean staffMember, IssueBean issue) throws SerializationException {
         UUID uuid;
         try {
             uuid = UUID.fromString(uniqueId);
@@ -72,7 +98,7 @@ public class SolutionBean implements DatabaseSerializable {
             throw new SerializationException("unknown solution state",e);
         }
 
-        return new SolutionBean(uuid,solutionDate,resolutionDetails,solutionState,staffMember);
+        return new SolutionBean(uuid,solutionDate,resolutionDetails,solutionState,staffMember,issue);
     }
 
     @Override

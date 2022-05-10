@@ -1,25 +1,26 @@
 body {
 	background-color: #FAEBD7;
-	margin:1;
-	padding:1;
+	margin: 1px;
+	padding: 1px;
 	font-family: sans-serif;
 }
+
 h1{
 	color: darkblue;
 }
+
 hr{
-	height:2px;
-	border-width:10;
 	color:gray;
-	background-color:gray;
 }
-.form-style-2{
+
+.form-style-2 {
 	max-width: 500px;
 	padding: 20px 12px 10px 20px;
 	font: 13px Arial, Helvetica, sans-serif;
 	color: darkblue;
 }
-.form-style-2-heading{
+
+.form-style-2-heading {
 	font-weight: bold;
 	font-style: italic;
 	border-bottom: 2px solid #ddd;
@@ -28,24 +29,24 @@ hr{
 	padding-bottom: 3px;
 	color: darkblue;
 }
-.form-style-2 label{
-	display: inline;
-	margin: 0px 0px 15px 0px;
+
+.form-style-2 label {
 	color: darkblue;
+	margin: 3px;
 }
-.form-style-2 label > span{
-	width: 100px;
-	font-weight: bold;
-	float: left;
-	padding-top: 8px;
-	padding-right: 5px;
-}
-.form-style-2 span.required{
+
+.form-style-2 .required{
 	color:red;
 }
+
 .form-style-2 input.input-field{
-	width: 48%;	
-	margin-left: 20px;
+	width: 50%;
+}
+
+.form-style-2 .err {
+	color: darkgray;
+	font-size: 14px;
+	margin: 0;
 }
 
 .form-style-2 input.input-field{
@@ -67,70 +68,71 @@ hr{
 }
 /*==================*/
 .container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  grid-gap: 10px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr); /* 3 columns */
+	grid-gap: 10px;
 }
 
 .container>* {
-  border: 2px solid;
-  min-height : 100px
-  
-  /* center content */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+	border: 2px solid;
+	min-height : 100px;
+	/* center content */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
 .itcontainer {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 3 columns */
-  grid-gap: 10px;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr); /* 3 columns */
+	grid-gap: 10px;
 }
 
 .itcontainer>* {
-  border: 2px solid;
-  min-height : 100px
-  
-  /* center content */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+	border: 2px solid;
+	min-height : 100px;
+
+	/* center content */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 .wrapper {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .box {
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-  border: 2px solid black;
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	border: 2px solid black;
 }
 
 .image {
-  display: inline-block;
-  padding: 10px;
+	display: inline-block;
+	padding: 10px;
 }
 
 @media (min-width: 600px) {
-  .wrapper {
-    flex-direction: row;
-  }
-  
-  .box {
-    width: auto;
-    flex-grow: 1;
-  }
+	.wrapper {
+		flex-direction: row;
+	}
 
-
-/*==================*/
-.error{
-	color: red;
+	.box {
+		width: auto;
+		flex-grow: 1;
+	}
 }
+
+
+	/*==================*/
+.error{
+		color: red;
+	}
+
 footer{
 	position: absolute;
 	bottom: 0;

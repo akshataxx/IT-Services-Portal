@@ -3,6 +3,7 @@ package model.application;
 import model.application.storage.StorageImplementation;
 import model.domain.UserBean;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public class UserManager {
@@ -23,6 +24,10 @@ public class UserManager {
 
     public UserBean getUserById(UUID uniqueId) {
         return storage.getUser(uniqueId);
+    }
+
+    public Collection<UserBean> getAllUsers() {
+        return storage.getAllUsers();
     }
 
     public void updateUser(UserBean user) {

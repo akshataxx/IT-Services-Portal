@@ -34,12 +34,18 @@ public class CategoryDefinition {
         return displayName;
     }
 
+
     public boolean equals(Object o) {
         if(!(o instanceof CategoryDefinition))
             return false;
 
         CategoryDefinition def = (CategoryDefinition) o;
         return def.name.equals(this.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     public String toString() {
@@ -54,13 +60,13 @@ public class CategoryDefinition {
         if(name==null)
             throw new IllegalArgumentException("null");
         name = name.toUpperCase(Locale.ROOT);
-        for(CategoryDefinition categoryDefinition : values()) {
-            if(name.equalsIgnoreCase(categoryDefinition.name))
-                return categoryDefinition;
+        for(CategoryDefinition main : values()) {
+            if(name.equalsIgnoreCase(main.name))
+                return main;
 
-            for(CategoryDefinition definition : categoryDefinition.subCategories) {
-                if(name.equalsIgnoreCase(definition.name))
-                    return definition;
+            for(CategoryDefinition sub : main.subCategories) {
+                if(name.equalsIgnoreCase(sub.name))
+                    return sub;
             }
         }
         throw new IllegalArgumentException("Unknown Category Definition");
@@ -104,5 +110,5 @@ public class CategoryDefinition {
 
     public static final CategoryDefinition WRONG_DETAILS = new CategoryDefinition("WRONG_DETAILS","Wrong details");
 
-    public static final CategoryDefinition ACCOUNT = new CategoryDefinition("ACCOUNT","account",new CategoryDefinition[]{PASSWORD_RESET,WRONG_DETAILS});
+    public static final CategoryDefinition ACCOUNT = new CategoryDefinition("ACCOUNT","Account",new CategoryDefinition[]{PASSWORD_RESET,WRONG_DETAILS});
 }

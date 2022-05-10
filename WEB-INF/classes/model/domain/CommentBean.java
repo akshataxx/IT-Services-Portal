@@ -1,22 +1,22 @@
 package model.domain;
 
-import java.util.Objects;
+import util.Preconditions;
+
 import java.util.UUID;
 
-public class CommentBean implements DatabaseSerializable {
+public class CommentBean implements DatabaseSerializable, TextElement {
 
     private final UUID uniqueId;
     private final UserBean userBean;
     private final long timePosted;
-    private final String comment;
+    private String comment;
 
     public CommentBean(UserBean userBean, String comment) {
-        Objects.requireNonNull(userBean);
-        Objects.requireNonNull(comment);
+        Preconditions.validateNotNull(userBean);
         this.uniqueId = UUID.randomUUID();
         this.userBean = userBean;
         this.timePosted = System.currentTimeMillis();
-        this.comment = comment;
+        setText(comment);
     }
 
     private CommentBean(UUID uniqueId, UserBean userBean, long timePosted, String comment) {
@@ -26,7 +26,7 @@ public class CommentBean implements DatabaseSerializable {
         this.comment = comment;
     }
 
-    public UserBean getUserBean() {
+    public UserBean getAuthor() {
         return userBean;
     }
 
@@ -34,8 +34,15 @@ public class CommentBean implements DatabaseSerializable {
         return timePosted;
     }
 
-    public String getComment() {
+    public String getText() {
         return comment;
+    }
+
+    @Override
+    public void setText(String text) {
+        Preconditions.validateLength(comment,500);
+        Preconditions.validateNotNull(comment);
+        this.comment = text;
     }
 
     public UUID getUniqueId() {

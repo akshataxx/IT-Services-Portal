@@ -1,7 +1,10 @@
 package model.domain;
 
 import model.application.ITPortal;
+import util.Preconditions;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -22,16 +25,16 @@ public class IssueBean implements DatabaseSerializable {
 
     public IssueBean(String title, String description, UserBean reporter, Category category) {
         this.uniqueId = issueCount.getAndIncrement();
-        Objects.requireNonNull(title);
-        Objects.requireNonNull(description);
-        Objects.requireNonNull(reporter);
-        Objects.requireNonNull(category);
+        Preconditions.validateNotNull(title);
+        Preconditions.validateNotNull(description);
+        Preconditions.validateNotNull(reporter);
+        Preconditions.validateNotNull(category);
 
         if(!reporter.getRole().equals(UserRole.USER))
             throw new IllegalArgumentException("IT staff cannot report issues");
 
-        this.title = title;
-        this.description = description;
+        setTitle(title);
+        setDescription(description);
         this.reportDate = System.currentTimeMillis();
         this.reporter = reporter;
         this.resolveDate = -1;
@@ -58,19 +61,22 @@ public class IssueBean implements DatabaseSerializable {
 
 
     public void setState(IssueState state) {
-        if(state.equals(IssueState.RESOLVED))
+        if(this.state.equals(IssueState.RESOLVED))
             throw new IllegalStateException("Issue has already been resolved");
 
-        Objects.requireNonNull(state);
+        Preconditions.validateNotNull(state);
         this.state = state;
     }
 
     public void setResolveDate(long resolveDate) {
+        if(!state.equals(IssueState.RESOLVED))
+            throw new IllegalStateException("Issue has not been resolved");
+
         this.resolveDate = resolveDate;
     }
 
     public void setCategory(Category category) {
-        Objects.requireNonNull(category);
+        Preconditions.validateNotNull(category);
         this.category = category;
     }
 
@@ -98,6 +104,7 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public IssueState getState() {
+        autoAcceptSolutions();
         return state;
     }
 
@@ -118,9 +125,7 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public void addSolution(SolutionBean solution) {
-        Objects.requireNonNull(solution);
-        if(this.state.equals(IssueState.RESOLVED))
-            throw new IllegalArgumentException("Cannot add solutions when the issue has been resolved");
+        Preconditions.validateNotNull(solution);
         this.solutions.add(solution);
     }
 
@@ -129,7 +134,10 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public void addComment(CommentBean comment) {
-        Objects.requireNonNull(comments);
+        Preconditions.validateNotNull(comments);
+        if(!comment.getAuthor().getRole().equals(UserRole.IT_STAFF))
+            if(!comment.getAuthor().equals(this.reporter))
+                throw new IllegalStateException("Illegal comment author");
         this.comments.add(comment);
     }
 
@@ -138,11 +146,78 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public void setTitle(String title) {
+        Preconditions.validateLength(title,0,150);
+        Preconditions.validateNotNull(title);
         this.title = title;
     }
 
     public void setDescription(String description) {
+        Preconditions.validateLength(description,0,2000);
+        Preconditions.validateNotNull(description);
         this.description = description;
+    }
+
+    public SolutionBean getSolution(UUID uniqueId) {
+        for(SolutionBean solution : solutions) {
+            if(solution.getUniqueId().equals(uniqueId))
+                return solution;
+        }
+        return null;
+    }
+
+    public void waitOnReporter(String notificationTitle, String notificationComment) {
+        if(isResolved())
+            throw new IllegalStateException("Issue has already been resolved");
+
+        setState(IssueState.WAITING_ON_REPORTER);
+        reporter.addNotification(new NotificationBean(notificationTitle,notificationComment,this));
+    }
+
+    public void solveIssue(SolutionBean solution, String notificationTitle, String notificationComment) {
+        if(isResolved())
+            throw new IllegalStateException("Cannot add solutions when the issue has been resolved");
+
+        setState(IssueState.COMPLETED);
+        this.reporter.addNotification(new NotificationBean(notificationTitle,notificationComment,this));
+        addSolution(solution);
+    }
+
+    public boolean isResolved() {
+        autoAcceptSolutions();
+        return state.equals(IssueState.RESOLVED);
+    }
+
+    private void autoAcceptSolutions() {
+        if(state.equals(IssueState.RESOLVED))
+            return;
+
+        long oneWeek = Duration.of(7, ChronoUnit.DAYS).toMillis();
+        for(SolutionBean solution : solutions) {
+            if(!solution.getState().equals(SolutionState.WAITING))
+                continue;
+            long duration = System.currentTimeMillis()-solution.getSolutionDate();
+            //forcibly accept solution if it has been longer than a week
+            if(duration>=oneWeek) {
+                solution.acceptSolution();
+                break;
+            }
+        }
+    }
+
+    public boolean isRejected() {
+        if(isResolved())
+            return false;
+
+        //get latest solution;
+        if(solutions.size()==0)
+            return false;
+        SolutionBean latest = solutions.get(0);
+        for(SolutionBean solution : getSolutions()) {
+            if(solution.getSolutionDate()>latest.getSolutionDate())
+                latest = solution;
+        }
+
+        return latest.getState().equals(SolutionState.REJECTED);
     }
 
     public static IssueBean serialize(long uniqueId, String title, String description, long reportDate, long resolveDate, String state, String category, String subCategory, boolean inKnowledgeBase, UserBean reporter) throws SerializationException {

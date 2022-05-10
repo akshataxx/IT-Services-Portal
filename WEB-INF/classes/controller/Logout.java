@@ -9,15 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 
-@WebServlet("/Logout")
+@WebServlet(name = "LogoutServlet", value="/logout")
 public class Logout extends HttpServlet {
-	private static final long serialVersionUID = 1L;
        
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		 HttpSession session = request.getSession();
-
+		HttpSession session = request.getSession();
 		session.invalidate();
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/Login.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/login.jsp");
 		requestDispatcher.forward(request, response);
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

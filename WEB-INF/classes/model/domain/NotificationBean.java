@@ -1,5 +1,7 @@
 package model.domain;
 
+import util.Preconditions;
+
 import java.util.UUID;
 
 public class NotificationBean implements DatabaseSerializable {
@@ -12,6 +14,10 @@ public class NotificationBean implements DatabaseSerializable {
 
     public NotificationBean(String title, String comment, IssueBean issueBean) {
         this.uniqueId = UUID.randomUUID();
+        Preconditions.validateLength(title,100);
+        Preconditions.validateLength(comment,350);
+        Preconditions.validateNotNull(title);
+        Preconditions.validateNotNull(comment);
         this.title = title;
         this.comment = comment;
         this.postTime = System.currentTimeMillis();

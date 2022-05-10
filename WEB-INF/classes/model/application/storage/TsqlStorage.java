@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -22,15 +23,13 @@ public class TsqlStorage implements StorageImplementation {
         this.factory = factory;
         userCache = new ConcurrentHashMap<>();
         issueCache = new ConcurrentHashMap<>();
-        initialise();
     }
 
-    private void initialise() {
+    public void initialise() throws StorageException {
         /**
          * Load the database into memory. I understand this is not very good practice, but it saves making a really complicated system with caching, database management, managing the dependencies of the data
          * etc. which is probably well out of the scope of this course
          */
-
         Connection connection = null;
         PreparedStatement userStatement = null;
         ResultSet userSet = null;
@@ -91,7 +90,7 @@ public class TsqlStorage implements StorageImplementation {
             while (solutionSet.next()) {
                 IssueBean issueBean = issueCache.get(solutionSet.getLong("issue"));
                 UserBean user = userCache.get(UUID.fromString(solutionSet.getString("staff")));
-                SolutionBean solution = SolutionBean.serialize(solutionSet.getString("id"),solutionSet.getLong("postTime"),solutionSet.getString("details"),solutionSet.getString("status"),user);
+                SolutionBean solution = SolutionBean.serialize(solutionSet.getString("id"),solutionSet.getLong("postTime"),solutionSet.getString("details"),solutionSet.getString("status"),user,issueBean);
                 issueBean.addSolution(solution);
             }
 
@@ -101,7 +100,7 @@ public class TsqlStorage implements StorageImplementation {
             IssueBean.setIssueCount(issueCountSet.getLong("issueCount"));
 
         } catch (SQLException | SerializationException e) {
-            e.printStackTrace();
+            throw new StorageException(e);
         } finally {
             closeSqlItem(userSet);
             closeSqlItem(userStatement);
@@ -137,6 +136,11 @@ public class TsqlStorage implements StorageImplementation {
             }
         }
         return null;
+    }
+
+    @Override
+    public Collection<UserBean> getAllUsers() {
+        return Collections.unmodifiableCollection(userCache.values());
     }
 
     @Override

@@ -1,15 +1,21 @@
 package model.application;
 
+import model.application.storage.StorageException;
 import model.application.storage.StorageImplementation;
+
+import java.sql.SQLException;
 
 public class ITPortal {
 
     private volatile static ITPortal instance;
     private IssueManager issueManager;
     private UserManager userManager;
-    private StorageImplementation storageImplementation;
+    private boolean initialised;
 
     public ITPortal() {
+        issueManager = null;
+        userManager = null;
+        initialised = false;
     }
 
     public static ITPortal getInstance() {
@@ -26,9 +32,20 @@ public class ITPortal {
     }
 
     public void setStorageImplementation(StorageImplementation implementation) {
-        this.storageImplementation = implementation;
-        this.issueManager = new IssueManager(storageImplementation);
-        this.userManager = new UserManager(storageImplementation);
+        try {
+            implementation.initialise();
+            initialised = true;
+        } catch (StorageException e) {
+            System.out.println("----oO Storage Initialization Exception Oo---");
+            e.printStackTrace();
+            return;
+        }
+        this.issueManager = new IssueManager(implementation);
+        this.userManager = new UserManager(implementation);
+    }
+
+    public boolean isInitialised() {
+        return initialised;
     }
 
     public IssueManager getIssueManager() {
