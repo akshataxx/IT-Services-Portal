@@ -1,17 +1,16 @@
-package model.application.sorter;
+package controller.sorter;
 
-import model.domain.Category;
 import model.domain.IssueBean;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class CategoryGrouper implements Sorter<IssueBean> {
+public class RejectionGrouper implements Sorter<IssueBean> {
 
-    private final Category category;
+    private final GroupOption option;
 
-    public CategoryGrouper(Category category) {
-        this.category = category;
+    public RejectionGrouper(GroupOption option) {
+        this.option = option;
     }
 
     @Override
@@ -19,13 +18,19 @@ public class CategoryGrouper implements Sorter<IssueBean> {
         Iterator<IssueBean> iterator = items.iterator();
         while (iterator.hasNext()) {
             IssueBean issue = iterator.next();
-            if(category.getSub()==null) {
-                if(!issue.getCategory().getMain().equals(category.getMain()))
+            if(option.equals(GroupOption.RESOLVED)) {
+                if (!issue.isResolved())
                     iterator.remove();
             } else {
-                if(!issue.getCategory().equals(category))
+                if(!issue.isRejected())
                     iterator.remove();
             }
         }
+    }
+
+    public enum GroupOption {
+        REJECTED,
+        RESOLVED
+        ;
     }
 }

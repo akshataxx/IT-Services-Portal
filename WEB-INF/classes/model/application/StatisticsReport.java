@@ -6,7 +6,6 @@ import util.Preconditions;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
 
 public class StatisticsReport {
 
@@ -50,7 +49,7 @@ public class StatisticsReport {
         long daysMillis = Duration.of(days, ChronoUnit.DAYS).toMillis();
         for(IssueBean issue : portal.getIssueManager().getAllIssues()) {
             if(issue.isResolved()) {
-                long lastSolved = System.currentTimeMillis() - issue.getResolveDate();
+                long lastSolved = System.currentTimeMillis() - issue.getResolveDateTime();
                 if (lastSolved < daysMillis) {
                     countMap.increment(issue.getCategory());
                     countMap.increment(issue.getCategory().asMain());

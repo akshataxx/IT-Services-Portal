@@ -1,4 +1,4 @@
-package model.application.sorter;
+package controller.sorter;
 
 import model.domain.IssueBean;
 
@@ -22,8 +22,4 @@ public class AlphabeticalSorter implements Sorter<IssueBean> {
         items.sort(alphabetical);
     }
 
-    public enum SortOption {
-        ASCENDING,
-        DESCENDING
-    }
 }

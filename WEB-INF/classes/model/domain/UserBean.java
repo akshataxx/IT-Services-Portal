@@ -15,7 +15,7 @@ public class UserBean implements DatabaseSerializable {
 	private String contactNo;
 	private final UserRole role;
 	private final List<NotificationBean> notifications;
-	private final List<IssueBean> issues;
+	private final Set<IssueBean> issues;
 
 	public UserBean(UserRole role, String firstName, String lastName, String username, String password) {
 		Preconditions.validateNotNull(role);
@@ -34,7 +34,7 @@ public class UserBean implements DatabaseSerializable {
 		this.contactNo = null;
 
 		this.notifications = new ArrayList<>();
-		this.issues = new ArrayList<>();
+		this.issues = new HashSet<>();
 	}
 
 	private UserBean(UUID uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, UserRole role) {
@@ -47,7 +47,7 @@ public class UserBean implements DatabaseSerializable {
 		this.role = role;
 		this.email = email;
 		this.notifications = new ArrayList<>();
-		this.issues = new ArrayList<>();
+		this.issues = new HashSet<>();
 	}
 
 	public String getFirstName() {
@@ -134,7 +134,7 @@ public class UserBean implements DatabaseSerializable {
 	}
 
 	public Collection<IssueBean> getIssues() {
-		return Collections.unmodifiableList(issues);
+		return Collections.unmodifiableSet(issues);
 	}
 
 	public void addIssue(IssueBean issueBean) {

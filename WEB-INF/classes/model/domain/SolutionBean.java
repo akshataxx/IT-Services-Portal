@@ -2,6 +2,7 @@ package model.domain;
 
 import util.Preconditions;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -34,8 +35,14 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         this.issue = issue;
     }
 
-    public long getSolutionDate() {
+    @Override
+    public long getDateTime() {
         return solutionDate;
+    }
+
+    @Override
+    public Date getDate() {
+        return new Date(solutionDate);
     }
 
     @Override

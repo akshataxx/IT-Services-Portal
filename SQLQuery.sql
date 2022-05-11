@@ -58,8 +58,8 @@ go
 go
 CREATE TABLE Issue (
                        uniqueId 		INT				NOT NULL,
-                       description		VARCHAR(2000) 	NOT NULL,
-                       title			VARCHAR(150) 	NOT NULL,
+                       description		VARCHAR(2000) 	NOT NULL, --give user plenty of room to format and write description 
+                       title			VARCHAR(100) 	NOT NULL,
                        mainCategory	    VARCHAR(20)	    NOT NULL,
                        subCategory		VARCHAR(20)		NOT NULL,
                        dateReported 	BIGINT			NOT NULL,
@@ -118,7 +118,7 @@ go
 
 CREATE TABLE Solutions (
                            id			VARCHAR(36)			NOT NULL,
-                           details		VARCHAR(2000)		NOT NULL,
+                           details		VARCHAR(2000)		NOT NULL,  --Give IT staff plenty of room to write and format solution 
                            postTime	BIGINT				    NOT NULL,
                            status		VARCHAR(10)			NOT NULL,
                            staff		VARCHAR(36),

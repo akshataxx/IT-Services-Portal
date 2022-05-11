@@ -72,9 +72,7 @@ public class CategoryDefinition {
         throw new IllegalArgumentException("Unknown Category Definition");
     }
 
-
-
-    public static final CategoryDefinition CANT_CONNECT = new CategoryDefinition("CANT_CONNECT","Can’t connect ");
+    public static final CategoryDefinition CANT_CONNECT = new CategoryDefinition("CANT_CONNECT","Can't connect ");
 
     public static final CategoryDefinition SPEED = new CategoryDefinition("SPEED","Speed");
 
@@ -84,13 +82,13 @@ public class CategoryDefinition {
 
     public static final CategoryDefinition SLOW_TO_LOAD = new CategoryDefinition("SLOW_TO_LOAD","Slow to load");
 
-    public static final CategoryDefinition WONT_LOAD = new CategoryDefinition("WONT_LOAD","Won’t load at all");
+    public static final CategoryDefinition WONT_LOAD = new CategoryDefinition("WONT_LOAD","Won't load at all");
 
     public static final CategoryDefinition SOFTWARE = new CategoryDefinition("SOFTWARE","Software",new CategoryDefinition[]{SLOW_TO_LOAD,WONT_LOAD});
 
-    public static final CategoryDefinition COMP_WONT_TURN_ON = new CategoryDefinition("COMP_WONT_TURN_ON","Computer won’t turn on");
+    public static final CategoryDefinition COMP_WONT_TURN_ON = new CategoryDefinition("COMP_WONT_TURN_ON","Computer won't turn on");
 
-    public static final CategoryDefinition COMP_BLUE_SCREEN = new CategoryDefinition("COMP_BLUE_SCREEN","Computer “blue screens”");
+    public static final CategoryDefinition COMP_BLUE_SCREEN = new CategoryDefinition("COMP_BLUE_SCREEN","Computer \"blue screens\"");
 
     public static final CategoryDefinition DISK_DRIVE = new CategoryDefinition("DISK_DRIVE","Disk drive");
 
@@ -98,9 +96,9 @@ public class CategoryDefinition {
 
     public static final CategoryDefinition HARDWARE = new CategoryDefinition("HARDWARE","Hardware",new CategoryDefinition[]{COMP_WONT_TURN_ON,COMP_BLUE_SCREEN,DISK_DRIVE,PERIPHERALS});
 
-    public static final CategoryDefinition CANT_SEND = new CategoryDefinition("CANT_SEND","Can’t send");
+    public static final CategoryDefinition CANT_SEND = new CategoryDefinition("CANT_SEND","Can't send");
 
-    public static final CategoryDefinition CANT_RECEIVE = new CategoryDefinition("CANT_RECEIVE","Can’t receive");
+    public static final CategoryDefinition CANT_RECEIVE = new CategoryDefinition("CANT_RECEIVE","Can't receive");
 
     public static final CategoryDefinition SPAM = new CategoryDefinition("SPAM","SPAM/Phishing");
 

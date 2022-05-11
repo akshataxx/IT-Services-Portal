@@ -8,10 +8,24 @@ import model.domain.*;
 import util.CountMap;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 public class Main {
 
     public static void main(String[] args) {
+        /**
+         * TODO
+         *   - IT View for Issue
+         *   - Accept/Reject Solution
+         *   - Notifications
+         *   - Add Solution
+         *   - Statistics
+         *   - Knowledge Base
+         *   - Knowledge Article
+         *   - Save Database
+         */
         //categoryExample();
         //issueExample();
         System.out.println(System.currentTimeMillis());
@@ -27,6 +41,10 @@ public class Main {
                     System.out.println(" - " +sub.getDisplayName()+": "+unsolvedCategory.get(new Category(main,sub)));
                 }
             }
+
+            Instant instant = Instant.now();
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            System.out.println(format.format(instant.toEpochMilli()));
             System.out.println(unsolvedCategory.get(new Category(CategoryDefinition.HARDWARE,CategoryDefinition.COMP_WONT_TURN_ON)));
             storage.shutdown();
         } catch (SQLException e) {

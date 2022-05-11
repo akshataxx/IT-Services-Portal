@@ -1,6 +1,5 @@
 package model.domain;
 
-import model.application.ITPortal;
 import util.Preconditions;
 
 import java.time.Duration;
@@ -95,12 +94,20 @@ public class IssueBean implements DatabaseSerializable {
         return description;
     }
 
-    public long getReportDate() {
+    public long getReportDateTime() {
         return reportDate;
     }
 
-    public long getResolveDate() {
+    public long getResolveDateTime() {
         return resolveDate;
+    }
+
+    public Date getReportDate() {
+        return new Date(reportDate);
+    }
+
+    public Date getResolveDate() {
+        return new Date(resolveDate);
     }
 
     public IssueState getState() {
@@ -146,7 +153,7 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public void setTitle(String title) {
-        Preconditions.validateLength(title,0,150);
+        Preconditions.validateLength(title,0,100);
         Preconditions.validateNotNull(title);
         this.title = title;
     }
@@ -195,7 +202,7 @@ public class IssueBean implements DatabaseSerializable {
         for(SolutionBean solution : solutions) {
             if(!solution.getState().equals(SolutionState.WAITING))
                 continue;
-            long duration = System.currentTimeMillis()-solution.getSolutionDate();
+            long duration = System.currentTimeMillis()-solution.getDateTime();
             //forcibly accept solution if it has been longer than a week
             if(duration>=oneWeek) {
                 solution.acceptSolution();
@@ -213,7 +220,7 @@ public class IssueBean implements DatabaseSerializable {
             return false;
         SolutionBean latest = solutions.get(0);
         for(SolutionBean solution : getSolutions()) {
-            if(solution.getSolutionDate()>latest.getSolutionDate())
+            if(solution.getDateTime()>latest.getDateTime())
                 latest = solution;
         }
 

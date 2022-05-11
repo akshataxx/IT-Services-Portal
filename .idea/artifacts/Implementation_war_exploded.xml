@@ -17,6 +17,10 @@
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: com.microsoft.sqlserver:mssql-jdbc:11.1.1.jre17-preview" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.39" />
+          <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:1.2.6" />
+          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:1.2.4" />
+          <element id="library" level="project" name="Maven: jakarta.servlet:jakarta.servlet-api:4.0.2" />
+          <element id="library" level="project" name="Maven: jakarta.el:jakarta.el-api:3.0.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -2,6 +2,7 @@ package model.domain;
 
 import util.Preconditions;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class CommentBean implements DatabaseSerializable, TextElement {
@@ -30,8 +31,14 @@ public class CommentBean implements DatabaseSerializable, TextElement {
         return userBean;
     }
 
-    public long getTimePosted() {
+    @Override
+    public long getDateTime() {
         return timePosted;
+    }
+
+    @Override
+    public Date getDate() {
+        return new Date(timePosted);
     }
 
     public String getText() {
@@ -40,8 +47,8 @@ public class CommentBean implements DatabaseSerializable, TextElement {
 
     @Override
     public void setText(String text) {
-        Preconditions.validateLength(comment,500);
-        Preconditions.validateNotNull(comment);
+        Preconditions.validateLength(text,1,500);
+        Preconditions.validateNotNull(text);
         this.comment = text;
     }
 

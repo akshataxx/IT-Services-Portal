@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 
 @WebServlet(name = "LogoutServlet", value="/logout")
-public class Logout extends HttpServlet {
+public class Logout extends ITPortalServlet {
        
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/login.jsp");
-		requestDispatcher.forward(request, response);
+		response.sendRedirect(request.getContextPath());
     }
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

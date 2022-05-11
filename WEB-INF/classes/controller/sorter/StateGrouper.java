@@ -1,4 +1,4 @@
-package model.application.sorter;
+package controller.sorter;
 
 import model.domain.IssueBean;
 import model.domain.IssueState;

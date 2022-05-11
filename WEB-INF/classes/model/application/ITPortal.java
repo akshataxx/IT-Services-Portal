@@ -11,11 +11,13 @@ public class ITPortal {
     private IssueManager issueManager;
     private UserManager userManager;
     private boolean initialised;
+    private boolean failedInitialisation;
 
     public ITPortal() {
         issueManager = null;
         userManager = null;
         initialised = false;
+        failedInitialisation = false;
     }
 
     public static ITPortal getInstance() {
@@ -38,6 +40,7 @@ public class ITPortal {
         } catch (StorageException e) {
             System.out.println("----oO Storage Initialization Exception Oo---");
             e.printStackTrace();
+            failedInitialisation = true;
             return;
         }
         this.issueManager = new IssueManager(implementation);
@@ -46,6 +49,10 @@ public class ITPortal {
 
     public boolean isInitialised() {
         return initialised;
+    }
+
+    public boolean isFailedInitialisation() {
+        return failedInitialisation;
     }
 
     public IssueManager getIssueManager() {

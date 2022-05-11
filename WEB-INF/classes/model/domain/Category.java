@@ -60,6 +60,10 @@ public class Category {
         return values;
     }
 
+    public static Collection<Category> getValues() {
+        return values();
+    }
+
     @Override
     public int hashCode() {
         if(sub==null)

@@ -117,8 +117,10 @@ function handleOriginalFields(formCriteria) {
     Object.entries(formCriteria.fields).forEach(([property,field]) => {
         const fieldID = `#${getErrField(field)}`;
         const f = document.querySelector(fieldID);
-        originalErrMsg[formCriteria.name][property] = f.innerHTML;
-        originalColor = f.style.color;
+        if(f) {
+            originalErrMsg[formCriteria.name][property] = f.innerHTML;
+            originalColor = f.style.color;
+        }
         //get the physical message i.e the innerHTML and the color
     });
 }
@@ -129,8 +131,10 @@ function setOriginalFields(formCriteria) {
     Object.entries(originalErrMsg[formCriteria.name]).forEach(([property,field]) => {
         const fieldID = `#${getErrField(formCriteria.fields[property])}`;
         const f = document.querySelector(fieldID);
-        f.innerHTML = field;
-        f.style.color = originalColor;
+        if(f) {
+            f.innerHTML = field;
+            f.style.color = originalColor;
+        }
     });
 }
 

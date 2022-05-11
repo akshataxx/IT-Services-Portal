@@ -1,7 +1,8 @@
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
 		<meta charset="UTF-8">
 		<script src="validation.js" type="text/javascript"></script>
 		<script>
@@ -34,7 +35,7 @@
 	<body>
 		<h1>Welcome to IT Issue Reporting System </h1>
 		<hr>
-		<p class="error">${requestScope.login_err}</p>
+		<p class="error"><c:out value="${requestScope.login_err}"/></p>
 		<div class="form-style-2">
 		<div class="form-style-2-heading">Please Enter Your Credentials Here...</div>
 			<!-- The reason I have the method as get is, so we can easily test breaking the parameters! This can be changed back to post

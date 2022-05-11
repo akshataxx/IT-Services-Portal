@@ -2,6 +2,7 @@ package controller;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.UUID;
 
 public class RequestParameter {
 
@@ -117,6 +118,29 @@ public class RequestParameter {
             return true;
         } catch (NumberFormatException e) {
             return false;
+        }
+    }
+
+    public boolean isUniqueId() {
+        if(value==null)
+            return false;
+
+        try {
+            UUID.fromString(value);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public UUID asUniqueId() {
+        if(value==null)
+            return new UUID(0,0);
+
+        try {
+            return UUID.fromString(value);
+        } catch (IllegalArgumentException e) {
+            return new UUID(0,0);
         }
     }
 

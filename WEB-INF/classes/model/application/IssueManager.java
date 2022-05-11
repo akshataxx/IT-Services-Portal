@@ -15,6 +15,7 @@ public class IssueManager {
 
     public void reportIssue(IssueBean issueBean) {
         Objects.requireNonNull(issueBean);
+        issueBean.getReporter().addIssue(issueBean);
         implementation.updateIssue(issueBean);
     }
 

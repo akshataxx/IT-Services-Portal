@@ -1,4 +1,4 @@
-package model.application.sorter;
+package controller.sorter;
 
 import java.util.List;
 
