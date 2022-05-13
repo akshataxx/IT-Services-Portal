@@ -60,7 +60,7 @@
 	<a href="${pageContext.request.contextPath}/user">Home</a>
 	<div class="topnav-right">
 		<a href="${pageContext.request.contextPath}/logout">Log Out</a>
-		<a href="${pageContext.request.contextPath}/notifications">Notifications</a>
+		<a href="${pageContext.request.contextPath}/notifications">Notifications <c:out value="[${user.unreadNotifications}]"/></a>
 		<a href="${pageContext.request.contextPath}/user"><c:out value="${user.firstName} ${user.surname}"/></a>
 	</div>
 </div>
@@ -82,7 +82,7 @@
 					<c:out value="${issue.category.sub.displayName}"/>
 					<c:forEach begin="1" end="${spacing}">&nbsp;</c:forEach>
 					<c:out value="${issue.state.displayName}"/><br/>
-					<c:out value="Issue #${issue.uniqueId} opened on "/><fmt:formatDate value="${issue.reportDate}" pattern="dd-MM-yyyy HH:mm"/><c:out value=" by ${issue.reporter.firstName} ${issue.reporter.surname}"/>
+					<c:out value="Issue #${issue.uniqueId} opened on "/><fmt:formatDate value="${issue.reportDate}" pattern="dd-MM-yyyy"/> at <fmt:formatDate value="${issue.reportDate}" pattern="hh:mm aa"/><c:out value=" by ${issue.reporter.firstName} ${issue.reporter.surname}"/>
 				</a>
 			</li>
 		</c:forEach>

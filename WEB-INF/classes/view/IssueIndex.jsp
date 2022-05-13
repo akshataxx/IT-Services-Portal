@@ -27,7 +27,7 @@
     <a href="${pageContext.request.contextPath}/user">Home</a>
     <div class="topnav-right">
         <a href="${pageContext.request.contextPath}/logout">Log Out</a>
-        <a href="${pageContext.request.contextPath}/notifications">Notifications</a>
+        <a href="${pageContext.request.contextPath}/notifications">Notifications <c:out value="[${user.unreadNotifications}]"/></a>
         <a href="${pageContext.request.contextPath}/user"><c:out value="${user.firstName} ${user.surname}"/></a>
     </div>
 </div>
@@ -57,10 +57,10 @@
         <label for="subCategory">Sub-Category</label>
         <select name="subCategory" id="subCategory">
         </select>
-        <input type="checkbox" id="categoryRadio" name="group-category" value="category"><br/>
         <script>
             addDynamicSelect("category","subCategory", collections);
         </script>
+        <input type="checkbox" id="categoryRadio" name="group-category" value="category"><br/>
         <label for="rejected-option">Group Rejected</label>
         <select name="rejected-option" id="rejected-option">
             <option value="REJECTED">Rejected</option>
@@ -70,6 +70,8 @@
         <input type="submit" value="Sort and Group">
     </fieldset>
 </form>
+
+<h2>Issues</h2>
 
 <div class="display-issues">
     <ul>
@@ -87,7 +89,7 @@
                     <c:forEach begin="1" end="${spacing}">&nbsp;</c:forEach>
                     <c:if test="${issue.rejected}">Recently Rejected</c:if>
                     <br/>
-                    <c:out value="Issue #${issue.uniqueId} opened on "/><fmt:formatDate value="${issue.reportDate}" pattern="dd-MM-yyyy HH:mm"/><c:out value=" by ${issue.reporter.firstName} ${issue.reporter.surname}"/>
+                    <c:out value="Issue #${issue.uniqueId} opened on "/><fmt:formatDate value="${issue.reportDate}" pattern="dd-MM-yyyy"/> at <fmt:formatDate value="${issue.reportDate}" pattern="hh:mm aa"/><c:out value=" by ${issue.reporter.firstName} ${issue.reporter.surname}"/>
                 </a>
             </li>
         </c:forEach>

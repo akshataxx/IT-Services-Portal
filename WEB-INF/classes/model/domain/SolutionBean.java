@@ -76,8 +76,11 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
     }
 
     public void acceptSolution() {
-        setState(SolutionState.ACCEPTED);
+        if(!getState().equals(SolutionState.WAITING))
+            throw new IllegalStateException("Issue state has already been decided");
+
         issue.setState(IssueState.RESOLVED);
+        setState(SolutionState.ACCEPTED);
         issue.setResolveDate(System.currentTimeMillis());
     }
 
@@ -85,9 +88,12 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         if(issue.isResolved())
             throw new IllegalStateException("Issue has already been resolved");
 
-        setState(SolutionState.REJECTED);
+        if(!getState().equals(SolutionState.WAITING))
+            throw new IllegalStateException("Issue state has already been decided");
+
         issue.setState(IssueState.IN_PROGRESS);
-        this.staffMember.addNotification(new NotificationBean(notificationTitle,notificationComment,issue));
+        setState(SolutionState.REJECTED);
+        this.staffMember.addUnreadNotification(new NotificationBean(notificationTitle,notificationComment,issue));
     }
 
     public static SolutionBean serialize(String uniqueId, long solutionDate, String resolutionDetails, String state, UserBean staffMember, IssueBean issue) throws SerializationException {

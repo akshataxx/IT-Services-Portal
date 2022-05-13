@@ -4,6 +4,7 @@ import model.application.ITPortal;
 import controller.sorter.CommentSorter;
 import controller.sorter.SolutionSorter;
 import controller.sorter.SortOption;
+import model.domain.EnumBean;
 import model.domain.IssueBean;
 import model.domain.UserBean;
 import model.domain.UserRole;
@@ -48,6 +49,7 @@ public class IssueView extends ITPortalServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/IssueView.jsp");
         request.setAttribute("issue",issue);
         request.setAttribute("sorter",new SolutionSorter(SortOption.DESCENDING,issue.getSolutions()));
+        request.setAttribute("enumBean",new EnumBean());
         request.setAttribute("commentSorter",new CommentSorter(SortOption.DESCENDING,issue.getComments()));
         dispatcher.forward(request,response);
     }

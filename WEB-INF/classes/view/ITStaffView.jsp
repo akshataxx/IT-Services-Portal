@@ -12,7 +12,7 @@
 	<a href="${pageContext.request.contextPath}/user">Home</a>
 	<div class="topnav-right">
 		<a href="${pageContext.request.contextPath}/logout">Log Out</a>
-		<a href="${pageContext.request.contextPath}/notifications">Notifications</a>
+		<a href="${pageContext.request.contextPath}/notifications">Notifications <c:out value="[${user.unreadNotifications}]"/></a>
 		<a href="${pageContext.request.contextPath}/user"><c:out value="${user.firstName} ${user.surname}"/></a>
 	</div>
 </div>

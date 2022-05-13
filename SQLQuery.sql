@@ -41,16 +41,17 @@ CREATE TABLE Users (
                        surname 		    VARCHAR(35) NOT NULL,
                        email 			VARCHAR(320),
                        contactno 		VARCHAR(15),
+                       unread           INTEGER,
                        role			VARCHAR(10),
                        CONSTRAINT pkUser PRIMARY KEY(uniqueId),
 );
 
 INSERT INTO Users values
-                      ('dc7bfbf0-cc69-11ec-9d64-0242ac120002','Akshi', 'Akshi', 'Akshata', 'Dhuraji', 'akshata@email.com', '111222333', 'USER'),
-                      ('f029bb1a-cc69-11ec-9d64-0242ac120002','Reena', 'Reena', 'Reena', 'Thomas', 'reena@email.com', '444333222', 'USER'),
-                      ('f3820a9c-cc69-11ec-9d64-0242ac120002','Sam', 'Sam', 'Sam', 'Dsouza', 'sam@email.com', '666555111', 'USER'),
-                      ('f9d5d4dc-cc69-11ec-9d64-0242ac120002','Nova', 'Nova', 'Nova', 'Johnson', 'nova@email.com', '888999444', 'IT_STAFF'),
-                      ('fc456b24-cc69-11ec-9d64-0242ac120002','Mita', 'Mita', 'Mita', 'Dixit', 'mita@email.com', '232323232', 'IT_STAFF');
+                      ('dc7bfbf0-cc69-11ec-9d64-0242ac120002','Akshi', 'Akshi', 'Akshata', 'Dhuraji', 'akshata@email.com', '111222333',0, 'USER'),
+                      ('f029bb1a-cc69-11ec-9d64-0242ac120002','Reena', 'Reena', 'Reena', 'Thomas', 'reena@email.com', '444333222',0, 'USER'),
+                      ('f3820a9c-cc69-11ec-9d64-0242ac120002','Sam', 'Sam', 'Sam', 'Dsouza', 'sam@email.com', '666555111',0, 'USER'),
+                      ('f9d5d4dc-cc69-11ec-9d64-0242ac120002','Nova', 'Nova', 'Nova', 'Johnson', 'nova@email.com', '888999444',0, 'IT_STAFF'),
+                      ('fc456b24-cc69-11ec-9d64-0242ac120002','Mita', 'Mita', 'Mita', 'Dixit', 'mita@email.com', '232323232',0, 'IT_STAFF');
 
 --SELECT * FROM Users;
 go
@@ -159,7 +160,5 @@ INSERT INTO Notifications VALUES('48b2a731-1d56-4af3-9738-584bf2c7ee26','New Sol
 INSERT INTO Notifications VALUES('ca7feccd-2e6a-4eab-8749-74851dcd516e','Solution Rejected','Your solution for issue #3 has been rejected by the user!',1652161834296,'fc456b24-cc69-11ec-9d64-0242ac120002',3);
 
 go
-
-SELECT COUNT(*) AS issueCount FROM Issue
 
 go

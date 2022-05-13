@@ -49,7 +49,7 @@ public class TsqlStorage implements StorageImplementation {
             userSet = userStatement.executeQuery();
             while (userSet.next()) {
                 UserBean user = UserBean.serialize(userSet.getString("uniqueId"), userSet.getString("username"), userSet.getString("surname"),
-                        userSet.getString("email"), userSet.getString("username"), userSet.getString("password"), userSet.getString("contactno"), userSet.getString("role"));
+                        userSet.getString("email"), userSet.getString("username"), userSet.getString("password"), userSet.getString("contactno"), userSet.getInt("unread"), userSet.getString("role"));
 
                 userCache.put(user.getUniqueId(),user);
             }

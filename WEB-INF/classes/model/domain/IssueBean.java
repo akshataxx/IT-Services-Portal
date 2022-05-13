@@ -79,11 +79,19 @@ public class IssueBean implements DatabaseSerializable {
         this.category = category;
     }
 
-    public void setInKnowledgeBase(boolean inKnowledgeBase) {
-        if(!(this.state.equals(IssueState.RESOLVED) || this.state.equals(IssueState.COMPLETED)))
+    public void addToKnowledgeBase() {
+        if(!canBeAddedToKnowledgeBase())
             throw new IllegalArgumentException("Issue cannot be added to the knowledge base if it is not completed or resolved");
 
-        this.inKnowledgeBase = inKnowledgeBase;
+        this.inKnowledgeBase = true;
+    }
+
+    public void removeFromKnowledgeBase() {
+        this.inKnowledgeBase = false;
+    }
+
+    public boolean canBeAddedToKnowledgeBase() {
+        return this.state.equals(IssueState.RESOLVED) || this.state.equals(IssueState.COMPLETED);
     }
 
     public String getTitle() {
@@ -142,10 +150,18 @@ public class IssueBean implements DatabaseSerializable {
 
     public void addComment(CommentBean comment) {
         Preconditions.validateNotNull(comments);
+        this.comments.add(comment);
+    }
+
+    public void commentOnIssue(CommentBean comment) {
         if(!comment.getAuthor().getRole().equals(UserRole.IT_STAFF))
             if(!comment.getAuthor().equals(this.reporter))
                 throw new IllegalStateException("Illegal comment author");
-        this.comments.add(comment);
+
+        if(isResolved())
+            throw new IllegalStateException("Cannot comment on issue in final state");
+
+        addComment(comment);
     }
 
     public long getUniqueId() {
@@ -173,19 +189,33 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public void waitOnReporter(String notificationTitle, String notificationComment) {
-        if(isResolved())
+        if(isResolved() || state.equals(IssueState.COMPLETED) || state.equals(IssueState.WAITING_ON_REPORTER))
             throw new IllegalStateException("Issue has already been resolved");
 
         setState(IssueState.WAITING_ON_REPORTER);
-        reporter.addNotification(new NotificationBean(notificationTitle,notificationComment,this));
+        reporter.addUnreadNotification(new NotificationBean(notificationTitle,notificationComment,this));
+    }
+
+    public void setInProgress() {
+        if(isResolved() || state.equals(IssueState.COMPLETED) || state.equals(IssueState.IN_PROGRESS))
+            throw new IllegalStateException("Issue has already been resolved");
+
+        setState(IssueState.IN_PROGRESS);
+    }
+
+    public void waitOnThirdParty() {
+        if(isResolved() || state.equals(IssueState.COMPLETED) || state.equals(IssueState.WAITING_ON_THIRD_PARTY))
+            throw new IllegalStateException("Issue has already been resolved");
+
+        setState(IssueState.WAITING_ON_THIRD_PARTY);
     }
 
     public void solveIssue(SolutionBean solution, String notificationTitle, String notificationComment) {
-        if(isResolved())
+        if(isResolved() || state.equals(IssueState.COMPLETED))
             throw new IllegalStateException("Cannot add solutions when the issue has been resolved");
 
         setState(IssueState.COMPLETED);
-        this.reporter.addNotification(new NotificationBean(notificationTitle,notificationComment,this));
+        this.reporter.addUnreadNotification(new NotificationBean(notificationTitle,notificationComment,this));
         addSolution(solution);
     }
 

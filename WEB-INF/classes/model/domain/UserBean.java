@@ -16,6 +16,7 @@ public class UserBean implements DatabaseSerializable {
 	private final UserRole role;
 	private final List<NotificationBean> notifications;
 	private final Set<IssueBean> issues;
+	private int unreadNotifications;
 
 	public UserBean(UserRole role, String firstName, String lastName, String username, String password) {
 		Preconditions.validateNotNull(role);
@@ -35,9 +36,10 @@ public class UserBean implements DatabaseSerializable {
 
 		this.notifications = new ArrayList<>();
 		this.issues = new HashSet<>();
+		unreadNotifications = 0;
 	}
 
-	private UserBean(UUID uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, UserRole role) {
+	private UserBean(UUID uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, int unreadNotifications, UserRole role) {
 		this.uniqueId = uniqueId;
 		this.firstName = firstName;
 		this.surname = surname;
@@ -46,6 +48,7 @@ public class UserBean implements DatabaseSerializable {
 		this.contactNo = contactNo;
 		this.role = role;
 		this.email = email;
+		this.unreadNotifications = unreadNotifications;
 		this.notifications = new ArrayList<>();
 		this.issues = new HashSet<>();
 	}
@@ -125,6 +128,19 @@ public class UserBean implements DatabaseSerializable {
 		this.notifications.add(notification);
 	}
 
+	public void addUnreadNotification(NotificationBean notificationBean) {
+		addNotification(notificationBean);
+		unreadNotifications++;
+	}
+
+	public int getUnreadNotifications() {
+		return unreadNotifications;
+	}
+
+	public void readNotifications() {
+		unreadNotifications = 0;
+	}
+
 	public NotificationBean getNotification(UUID uuid) {
 		for(NotificationBean notification : notifications) {
 			if(notification.getUniqueId().equals(uuid))
@@ -141,7 +157,7 @@ public class UserBean implements DatabaseSerializable {
 		this.issues.add(issueBean);
 	}
 
-	public static UserBean serialize(String uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, String role) throws SerializationException {
+	public static UserBean serialize(String uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, int unreadNotifications, String role) throws SerializationException {
 		UUID uuid;
 		try {
 			uuid = UUID.fromString(uniqueId);
@@ -158,7 +174,7 @@ public class UserBean implements DatabaseSerializable {
 			throw new SerializationException("Unknown user role",e);
 		}
 
-		return new UserBean(uuid,firstName,surname,email,username,password,contactNo,userRole);
+		return new UserBean(uuid,firstName,surname,email,username,password,contactNo,unreadNotifications,userRole);
 	}
 
 	@Override

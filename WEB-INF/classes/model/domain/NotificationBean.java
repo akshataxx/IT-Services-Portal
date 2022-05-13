@@ -2,6 +2,7 @@ package model.domain;
 
 import util.Preconditions;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class NotificationBean implements DatabaseSerializable {
@@ -42,6 +43,10 @@ public class NotificationBean implements DatabaseSerializable {
 
     public long getPostTime() {
         return postTime;
+    }
+
+    public Date getPostDate() {
+        return new Date(postTime);
     }
 
     public IssueBean getIssueBean() {
