@@ -31,7 +31,7 @@
             },
         };
     </script>
-    <title>Login</title>
+    <title>Notifications</title>
 </head>
 <body>
 <div class="topnav">

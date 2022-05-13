@@ -93,6 +93,7 @@
             <br/>
         </c:if>
         <form name="categorySubmit" action="${pageContext.request.contextPath}/updateCategory" method="get">
+            <input type="hidden" name="issue" value="${requestScope.issue.uniqueId}">
             <label for="category">Update Category</label>
             <select name="category" id="category">
                 <c:forEach var="category" items="${requestScope.enumBean.categoryValues}">
