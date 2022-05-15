@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet("/Resolved")
-public class Resolved extends HttpServlet {
+@WebServlet("/UnResolved")
+public class UnResolved extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Report resolvedRept;
+	private Report unResolvedRept;
 	
-	public Resolved(){
-		this.resolvedRept = new Report();
+	public UnResolved(){
+		this.unResolvedRept = new Report();
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("IssueRecSet", this.resolvedRept.getResolved()); 
-		System.out.println(" From Resolved.java" + this.resolvedRept.getResolved()); //DEBUG CODE
-		load(request, response,"/resolvedreport.jsp");
+		response.setContentType("text/html;charset=ISO-8859-1");
+		String category = (String)request.getParameter("category");
+		request.setAttribute("IssueRecSet", this.unResolvedRept.getUnResolved(category)); 
+		load(request, response,"/unresolvedreport.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
