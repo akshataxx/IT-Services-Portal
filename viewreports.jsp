@@ -13,16 +13,16 @@
 			<div class="box">
 				<div class="image"> <img src="images/resolvedreports.png"></img></div>
 				<h1><a href= "<%=request.getContextPath()%>/Resolved">Total Resolved Incidents <br>Within Last 7 Days<br> In Each Category</a></h1>
-					<div>Shows list of all the resolved incidents <br> in last 7 days, sorted or grouped by category</div>
+					<div> Report Shows List Of All The Resolved Incidents <br> in last 7 days, sorted or grouped by category</div>
 			</div>
 			<div class="box">
 				<div class="image"><img src="images/unresolved.png"></img></div>
-				<h1>Total Unresolved Incident <br> By Category</h1><br><br>
-					<div>detailed text that explains what the title means</div>
+				<h1><a href= "<%=request.getContextPath()%>/UnResolved">Total Unresolved Incident <br> By Category</a></h1><br><br>
+					<div>Report Shows All The Unresolved Issues By Selected Category</div>
 			</div>
 			<div class="box">
 				<div class="image"><img src="images/stress.png"></img></div>
-				<h1>Stress Rate</h1><br><br><br><br>
+				<h1><a href= "<%=request.getContextPath()%>/StressRate"> Stress Rate</a></h1><br><br><br><br>
 					<div>detailed text that explains what the title means</div>
 			</div>
 		</div>
