@@ -1,4 +1,6 @@
 package pkg;
+import java.time.LocalDateTime; 
+import java.util.*;
 
 public class Issue{
 	//variable declaration
@@ -9,8 +11,8 @@ public class Issue{
 	private String ITComment;
 	private String UserComment;
 	private String IssueStatus; 
-	private LocalDateTime DateRaised = new LocalDateTime();
-	private LocalDateTime DateResolved = new LocalDateTime();
+	private LocalDateTime DateRaised;
+	private LocalDateTime DateResolved;
 	
 	//Setter Function
 	public void setIssueId(int issueid){
@@ -37,7 +39,7 @@ public class Issue{
 	public void setDateRaised(LocalDateTime ldtraised){
 		DateRaised = ldtraised;
 	}
-	public void getDateResolved(LocalDateTime ldtresolved){
+	public void setDateResolved(LocalDateTime ldtresolved){
 		DateResolved=ldtresolved ;
 	}
 	
@@ -51,7 +53,7 @@ public class Issue{
 	public String getCategoryName(){
 		return CategoryName;
 	}
-	public String getSubCategoryNaem(){
+	public String getSubCategoryName(){
 		return SubcategoryName;
 	}
 	public String getITComment(){
@@ -64,9 +66,9 @@ public class Issue{
 		return IssueStatus;
 	}
 	public LocalDateTime getDateRaised(){
-		return DateRaised();
+		return DateRaised;
 	}
 	public LocalDateTime getDateResolved(){
-		return DateResolved();
+		return DateResolved;
 	}
 }	

@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet("/Resolved")
-public class Resolved extends HttpServlet {
+@WebServlet("/StressRate")
+public class StressRate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private Report resolvedRept;
+	private Report stressRateRept;
 	
-	public Resolved(){
-		this.resolvedRept = new Report();
+	public StressRate(){
+		this.stressRateRept = new Report();
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("IssueRecSet", this.resolvedRept.getResolved()); 
-		System.out.println(" From Resolved.java" + this.resolvedRept.getResolved()); //DEBUG CODE
-		load(request, response,"/resolvedreport.jsp");
+		request.setAttribute("StressRate", this.stressRateRept.getStressRate()); 
+		System.out.println(" From StressRate.java" + this.stressRateRept.getStressRate()); //DEBUG CODE
+		load(request, response,"/stressratereport.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
