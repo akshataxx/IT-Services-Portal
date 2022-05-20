@@ -52,8 +52,4 @@
     </c:forEach>
 </ul>
 </body>
-<footer>
-    &copy; All rights reserved , Copyright University of Newcastle-Callaghan 2022 <br/>
-    Akshata Dhuraji, Jacob Boyce, Wei Chen,  SENG2050, University of Newcastle
-</footer>
 </html>

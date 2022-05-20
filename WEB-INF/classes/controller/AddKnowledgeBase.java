@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "UpdateCategoryServlet", value = "/updateCategory")
-public class UpdateCategory extends ITPortalServlet {
+@WebServlet(name = "AddKnowledgeServlet", value = "/addKnowledge")
+public class AddKnowledgeBase extends ITPortalServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,18 +38,24 @@ public class UpdateCategory extends ITPortalServlet {
             return;
         }
 
-        String category = request.getParameter("category");
-        String subCategory = request.getParameter("subCategory");
+        if(issue.isInKnowledgeBase()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Issue is already in knowledge base");
+            return;
+        }
+
+        if(!issue.canBeAddedToKnowledgeBase()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Issue cannot be added to knowledge base");
+            return;
+        }
 
         try {
-            Category cat = new Category(CategoryDefinition.valueOf(category),CategoryDefinition.valueOf(subCategory));
-            issue.setCategory(cat);
+            issue.addToKnowledgeBase();
         } catch (IllegalArgumentException | IllegalStateException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,e.getMessage());
             return;
         }
 
-        response.sendRedirect(request.getContextPath()+"/issue?id="+issue.getUniqueId());
+        response.sendRedirect(request.getContextPath()+"/knowledge?id="+issue.getUniqueId());
     }
 
     @Override

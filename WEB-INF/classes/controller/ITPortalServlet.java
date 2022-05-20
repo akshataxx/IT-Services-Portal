@@ -21,15 +21,9 @@ public abstract class ITPortalServlet extends HttpServlet {
         if(portal.isInitialised() || portal.isFailedInitialisation())
             return;
 
-        System.out.println("--- Initialising Database ---");
         ConnectionFactory factory = new ContextConnectionFactory();
         StorageImplementation implementation = new TsqlStorage(factory);
         portal.setStorageImplementation(implementation);
-        if(portal.isInitialised()) {
-            System.out.println("--- oO Database Successfully Initialised Oo ---");
-        } else {
-            System.err.println("Database Initialization failed");
-        }
     }
 
     @Override
@@ -53,5 +47,12 @@ public abstract class ITPortalServlet extends HttpServlet {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void destroy() {
+        if(!ITPortal.getInstance().isShutdown()) {
+            ITPortal.getInstance().shutdown();
+        }
     }
 }

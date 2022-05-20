@@ -12,12 +12,15 @@ public class ITPortal {
     private UserManager userManager;
     private boolean initialised;
     private boolean failedInitialisation;
+    private boolean shutdown;
+    private StorageImplementation implementation;
 
     public ITPortal() {
         issueManager = null;
         userManager = null;
         initialised = false;
         failedInitialisation = false;
+        shutdown = false;
     }
 
     public static ITPortal getInstance() {
@@ -37,14 +40,16 @@ public class ITPortal {
         try {
             implementation.initialise();
             initialised = true;
+            shutdown = false;
+            this.issueManager = new IssueManager(implementation);
+            this.userManager = new UserManager(implementation);
+            this.implementation = implementation;
         } catch (StorageException e) {
             System.out.println("----oO Storage Initialization Exception Oo---");
             e.printStackTrace();
             failedInitialisation = true;
             return;
         }
-        this.issueManager = new IssueManager(implementation);
-        this.userManager = new UserManager(implementation);
     }
 
     public boolean isInitialised() {
@@ -65,5 +70,16 @@ public class ITPortal {
         if(this.userManager==null)
             throw new IllegalStateException("Storage not initialised");
         return userManager;
+    }
+
+    public boolean isShutdown() {
+        return shutdown;
+    }
+
+    public void shutdown() {
+        if(this.implementation!=null)
+            implementation.shutdown();
+
+        this.shutdown = true;
     }
 }

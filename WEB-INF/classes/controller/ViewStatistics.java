@@ -1,9 +1,8 @@
 package controller;
 
 import model.application.StatisticsReport;
-import model.domain.EnumBean;
-import model.domain.UserBean;
-import model.domain.UserRole;
+import model.domain.*;
+import util.CountMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "StatisticsServlet", value = "/statistics")
 public class ViewStatistics extends ITPortalServlet {
@@ -30,8 +33,21 @@ public class ViewStatistics extends ITPortalServlet {
         }
 
         StatisticsReport report = new StatisticsReport();
+
+        Map<Category,Integer> unsolved = new LinkedHashMap<>();
+        Map<Category,Integer> lastDays = new LinkedHashMap<>();
+        CountMap<Category> unsolvedCategory = report.getUnsolvedEachCategory();
+        for(Category category : Category.values()) {
+            unsolved.put(category,unsolvedCategory.get(category));
+        }
+        unsolvedCategory = report.getSolvedEachCategoryLastDays();
+        for(Category category : Category.values()) {
+            lastDays.put(category,unsolvedCategory.get(category));
+        }
+
         request.setAttribute("report",report);
-        request.setAttribute("enumBean",new EnumBean());
+        request.setAttribute("unsolved",unsolved);
+        request.setAttribute("solved",lastDays);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/ViewStats.jsp");
         dispatcher.forward(request,response);

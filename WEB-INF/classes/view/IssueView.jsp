@@ -109,6 +109,13 @@
             <input type="submit" value="Update Category">
         </form>
     </c:if>
+    <c:if test="${requestScope.issue.canBeAddedToKnowledgeBase()}">
+        <h3>Add To Knowledge Base</h3>
+        <form name="knowledge" method="get" action="${pageContext.request.contextPath}/addKnowledge">
+            <input type="hidden" name="issue" value="${requestScope.issue.uniqueId}">
+            <input value="Add To Knowledge" type="submit">
+        </form>
+    </c:if>
 </c:if>
 <hr/>
 <h2>Issue Description</h2>

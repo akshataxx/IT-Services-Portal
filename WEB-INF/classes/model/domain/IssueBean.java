@@ -63,6 +63,9 @@ public class IssueBean implements DatabaseSerializable {
         if(this.state.equals(IssueState.RESOLVED))
             throw new IllegalStateException("Issue has already been resolved");
 
+        if(!(state.equals(IssueState.RESOLVED) || state.equals(IssueState.COMPLETED)))
+            inKnowledgeBase = false;
+
         Preconditions.validateNotNull(state);
         this.state = state;
     }
@@ -91,6 +94,9 @@ public class IssueBean implements DatabaseSerializable {
     }
 
     public boolean canBeAddedToKnowledgeBase() {
+        if(inKnowledgeBase)
+            return false;
+
         return this.state.equals(IssueState.RESOLVED) || this.state.equals(IssueState.COMPLETED);
     }
 

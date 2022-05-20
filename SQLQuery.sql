@@ -2,11 +2,10 @@ USE [master];
 GO
 
 -- DROP DATABASE - remove on final product
-DROP DATABASE seng2050;
 CREATE DATABASE seng2050;
+go
 
 USE seng2050;
-
 go
 -- DROP LOGINS - remove on final product
 DROP LOGIN jdbcUserseng2050;
@@ -26,11 +25,11 @@ GO
 
 --DROP TABLES - remove on final product
 go
-DROP TABLE Users;
-DROP TABLE Issue;
-DROP TABLE Comments;
-DROP TABLE Solutions;
 DROP TABLE Notifications;
+DROP TABLE Solutions;
+DROP TABLE Comments;
+DROP TABLE Issue;
+DROP TABLE Users;
 go
 ---- CREATE TABLES ----
 CREATE TABLE Users (
@@ -161,4 +160,3 @@ INSERT INTO Notifications VALUES('ca7feccd-2e6a-4eab-8749-74851dcd516e','Solutio
 
 go
 
-go

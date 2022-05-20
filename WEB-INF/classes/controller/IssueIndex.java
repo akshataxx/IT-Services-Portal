@@ -46,13 +46,16 @@ public class IssueIndex extends ITPortalServlet {
 
     private boolean manageGroup(SortController controller, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if(request.getParameter("group-rejected")!=null) {
+            String rejectedOption = request.getParameter("rejected-option");
+            if(rejectedOption != null && !rejectedOption.equals("")) {
                 controller.groupRejected(RejectionGrouper.GroupOption.valueOf(request.getParameter("rejected-option")));
             }
-            if(request.getParameter("group-state")!=null) {
+            String stateOption = request.getParameter("state-option");
+            if(stateOption != null && !stateOption.equals("")) {
                 controller.groupState(IssueState.valueOf(request.getParameter("state-option")));
             }
-            if(request.getParameter("group-category")!=null) {
+            String categoryOption = request.getParameter("group-category");
+            if(categoryOption != null && !categoryOption.equals("")) {
                 CategoryDefinition main = CategoryDefinition.valueOf(request.getParameter("category"));
                 String sub = request.getParameter("subCategory");
                 if(sub==null || sub.equals("")) {

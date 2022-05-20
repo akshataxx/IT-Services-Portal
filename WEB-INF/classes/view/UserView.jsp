@@ -67,6 +67,8 @@
 <h1>Welcome to IT Issue Reporting System</h1>
 <hr>
 
+<h2><a href="${pageContext.request.contextPath}/knowledgeBase">View Knowledge Base</a></h2>
+
 <h2>Your Issues</h2>
 
 <div class="display-issues">

@@ -43,30 +43,30 @@
         <p class="form-style-2-heading">Group Options</p>
         <label for="state-option">Report State</label>
         <select name="state-option" id="state-option">
+            <option value=""></option>
             <c:forEach var="state" items="${requestScope.enumBean.issueValues}">
                 <option value="${state.name()}"><c:out value="${state.displayName}"/></option>
             </c:forEach>
-        </select>
-        <input type="checkbox" id="stateRadio" name="group-state" value="state"><br/>
+        </select><br/>
         <label for="category">Report Category</label>
         <select name="category" id="category">
+            <option value=""></option>
             <c:forEach var="category" items="${requestScope.enumBean.categoryValues}">
                 <option value="${category.name}"><c:out value="${category.displayName}"/></option>
             </c:forEach>
         </select>
         <label for="subCategory">Sub-Category</label>
         <select name="subCategory" id="subCategory">
-        </select>
+        </select><br/>
         <script>
             addDynamicSelect("category","subCategory", collections);
         </script>
-        <input type="checkbox" id="categoryRadio" name="group-category" value="category"><br/>
         <label for="rejected-option">Group Rejected</label>
         <select name="rejected-option" id="rejected-option">
+            <option value=""></option>
             <option value="REJECTED">Rejected</option>
             <option value="RESOLVED">Resolved</option>
-        </select>
-        <input type="checkbox" id="rejected" name="group-rejected" value="rejected"><br/>
+        </select><br/>
         <input type="submit" value="Sort and Group">
     </fieldset>
 </form>

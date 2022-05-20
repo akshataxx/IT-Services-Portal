@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Iterator;
+import java.util.UUID;
 
 public class Main {
 
@@ -36,31 +38,19 @@ public class Main {
          */
         //categoryExample();
         //issueExample();
-        /*
+
         System.out.println(System.currentTimeMillis());
         try {
             ConnectionFactory factory = new TestConnectionFactory("localhost\\SQLEXPRESS","jdbcUserseng2050","mypassword");
             StorageImplementation storage = new TsqlStorage(factory);
             ITPortal.getInstance().setStorageImplementation(storage);
-            StatisticsReport report = new StatisticsReport();
-            CountMap<Category> unsolvedCategory = report.unsolvedEachCategory();
-            for(CategoryDefinition main : CategoryDefinition.values()) {
-                System.out.println(main.getDisplayName()+": "+unsolvedCategory.get(new Category(main)));
-                for(CategoryDefinition sub : main.getSubCategories()) {
-                    System.out.println(" - " +sub.getDisplayName()+": "+unsolvedCategory.get(new Category(main,sub)));
-                }
+            for(IssueBean issue : ITPortal.getInstance().getIssueManager().getAllIssues()) {
+                issue.addComment(new CommentBean(ITPortal.getInstance().getUserManager().getUserById(UUID.fromString("f9d5d4dc-cc69-11ec-9d64-0242ac120002")),"Get Good"));
             }
-
-            Instant instant = Instant.now();
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            System.out.println(format.format(instant.toEpochMilli()));
-            System.out.println(unsolvedCategory.get(new Category(CategoryDefinition.HARDWARE,CategoryDefinition.COMP_WONT_TURN_ON)));
             storage.shutdown();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-         */
     }
 
     public static void categoryExample() {

@@ -44,6 +44,7 @@ public class TsqlStorage implements StorageImplementation {
         PreparedStatement issueCount = null;
         ResultSet issueCountSet = null;
         try {
+            //load all users
             connection = factory.getConnection();
             userStatement = connection.prepareStatement("SELECT * FROM Users");
             userSet = userStatement.executeQuery();
@@ -54,6 +55,7 @@ public class TsqlStorage implements StorageImplementation {
                 userCache.put(user.getUniqueId(),user);
             }
 
+            //load all issues
             issueStatement = connection.prepareStatement("SELECT * FROM Issue");
             issueSet = issueStatement.executeQuery();
             while (issueSet.next()) {
@@ -65,6 +67,7 @@ public class TsqlStorage implements StorageImplementation {
                 issueCache.put(issue.getUniqueId(),issue);
             }
 
+            //load all comments
             commentStatement = connection.prepareStatement("SELECT * FROM Comments");
             commentSet = commentStatement.executeQuery();
             while(commentSet.next()) {
@@ -75,6 +78,7 @@ public class TsqlStorage implements StorageImplementation {
                 issue.addComment(comment);
             }
 
+            //load all user notifications
             notificationStatement = connection.prepareStatement("SELECT * FROM Notifications");
             notificationSet = notificationStatement.executeQuery();
             while (notificationSet.next()) {
@@ -85,6 +89,7 @@ public class TsqlStorage implements StorageImplementation {
                 user.addNotification(notification);
             }
 
+            //load all issue solutions
             solutionStatement = connection.prepareStatement("SELECT * FROM Solutions");
             solutionSet = solutionStatement.executeQuery();
             while (solutionSet.next()) {
@@ -94,6 +99,7 @@ public class TsqlStorage implements StorageImplementation {
                 issueBean.addSolution(solution);
             }
 
+            //get which issue we are up to, so we can keep generating PK's
             issueCount = connection.prepareStatement("SELECT COUNT(*) AS issueCount FROM Issue");
             issueCountSet = issueCount.executeQuery();
             issueCountSet.next();
@@ -102,6 +108,7 @@ public class TsqlStorage implements StorageImplementation {
         } catch (SQLException | SerializationException e) {
             throw new StorageException(e);
         } finally {
+            //close all SQL items
             closeSqlItem(userSet);
             closeSqlItem(userStatement);
             closeSqlItem(issueSet);
@@ -112,7 +119,6 @@ public class TsqlStorage implements StorageImplementation {
             closeSqlItem(notificationStatement);
             closeSqlItem(solutionSet);
             closeSqlItem(solutionStatement);
-            closeSqlItem(connection);
             closeSqlItem(issueCount);
             closeSqlItem(issueCountSet);
         }
@@ -171,6 +177,172 @@ public class TsqlStorage implements StorageImplementation {
 
     @Override
     public void shutdown() {
+        Connection connection = null;
+        PreparedStatement issueStatement = null;
+        PreparedStatement userStatement = null;
+        PreparedStatement commentStatement = null;
+        PreparedStatement solutionStatement = null;
+        PreparedStatement notificationStatement = null;
+        try {
+            connection = factory.getConnection();
+            //save all users
+            userStatement = connection.prepareStatement("UPDATE Users " +
+                    "SET username=?, password=?,first_name=?,surname=?,email=?,contactno=?,unread=?,role=? " +
+                    "WHERE uniqueId = ? " +
+                    "IF @@ROWCOUNT = 0 " +
+                    "BEGIN " +
+                    "INSERT INTO Users VALUES(?,?,?,?,?,?,?,?,?); " +
+                    "END");
+
+            for(UserBean user : getAllUsers()) {
+                userStatement.setString(1,user.getUsername());
+                userStatement.setString(2,user.getPassword());
+                userStatement.setString(3,user.getFirstName());
+                userStatement.setString(4,user.getSurname());
+                userStatement.setString(5,user.getEmail());
+                userStatement.setString(6,user.getContactNo());
+                userStatement.setInt(7,user.getUnreadNotifications());
+                userStatement.setString(8,user.getRole().name());
+                userStatement.setString(9,user.getUniqueId().toString());
+                userStatement.setString(10,user.getUniqueId().toString());
+                userStatement.setString(11,user.getUsername());
+                userStatement.setString(12,user.getPassword());
+                userStatement.setString(13,user.getFirstName());
+                userStatement.setString(14,user.getSurname());
+                userStatement.setString(15,user.getEmail());
+                userStatement.setString(16,user.getContactNo());
+                userStatement.setInt(17,user.getUnreadNotifications());
+                userStatement.setString(18,user.getRole().name());
+                userStatement.addBatch();
+            }
+
+            userStatement.executeBatch();
+
+            //save all issues
+            issueStatement = connection.prepareStatement("" +
+                    "UPDATE Issue " +
+                    "SET description=?, title=?,mainCategory=?,subCategory=?,dateReported=?,knowledgeBase=?,issueStatus=?,dateResolved=? " +
+                    "WHERE uniqueId = ?; " +
+                    "IF @@ROWCOUNT = 0 " +
+                    "BEGIN " +
+                    "    INSERT INTO Issue VALUES(?,?,?,?,?,?,?,?,?,?); " +
+                    "END");
+            for(IssueBean issue : getAllIssues()) {
+                //set parameters
+                issueStatement.setString(1,issue.getDescription());
+                issueStatement.setString(2,issue.getTitle());
+                issueStatement.setString(3,issue.getCategory().getMain().getName());
+                issueStatement.setString(4,issue.getCategory().getSub().getName());
+                issueStatement.setLong(5,issue.getReportDateTime());
+                issueStatement.setBoolean(6,issue.isInKnowledgeBase());
+                issueStatement.setString(7,issue.getState().name());
+                issueStatement.setLong(8,issue.getResolveDateTime());
+                issueStatement.setLong(9,issue.getUniqueId());
+                issueStatement.setLong(10,issue.getUniqueId());
+                issueStatement.setString(11,issue.getDescription());
+                issueStatement.setString(12,issue.getTitle());
+                issueStatement.setString(13,issue.getCategory().getMain().getName());
+                issueStatement.setString(14,issue.getCategory().getSub().getName());
+                issueStatement.setLong(15,issue.getReportDateTime());
+                issueStatement.setBoolean(16,issue.isInKnowledgeBase());
+                issueStatement.setString(17,issue.getState().name());
+                issueStatement.setLong(18,issue.getResolveDateTime());
+                issueStatement.setString(19,issue.getReporter().getUniqueId().toString());
+                issueStatement.addBatch();
+            }
+            //execute issue batch
+            issueStatement.executeBatch();
+
+
+            //save all comments
+            commentStatement = connection.prepareStatement("UPDATE Comments " +
+                    "SET comment=?, timePosted=? " +
+                    "WHERE id = ?; " +
+                    "IF @@ROWCOUNT = 0 " +
+                    "BEGIN " +
+                    "    INSERT INTO Comments VALUES(?,?,?,?,?); " +
+                    "END");
+
+            for(IssueBean issue : getAllIssues()) {
+                for(CommentBean comment : issue.getComments()) {
+                    //set parameters
+                    commentStatement.setString(1,comment.getText());
+                    commentStatement.setLong(2,comment.getDateTime());
+                    commentStatement.setString(3,comment.getUniqueId().toString());
+                    commentStatement.setString(4,comment.getUniqueId().toString());
+                    commentStatement.setString(5,comment.getText());
+                    commentStatement.setLong(6,comment.getDateTime());
+                    commentStatement.setString(7,comment.getAuthor().getUniqueId().toString());
+                    commentStatement.setLong(8,issue.getUniqueId());
+                    commentStatement.addBatch();
+                }
+            }
+
+            //execute batch
+            commentStatement.executeBatch();
+
+            solutionStatement = connection.prepareStatement("UPDATE Solutions " +
+                    "SET details=?, postTime=?, status=? " +
+                    "WHERE id = ?; " +
+                    "IF @@ROWCOUNT = 0 " +
+                    "BEGIN " +
+                    "    INSERT INTO Solutions VALUES(?,?,?,?,?,?); " +
+                    "END");
+
+            for(IssueBean issue : getAllIssues()) {
+                for(SolutionBean solution : issue.getSolutions()) {
+                    solutionStatement.setString(1,solution.getText());
+                    solutionStatement.setLong(2,solution.getDateTime());
+                    solutionStatement.setString(3,solution.getState().toString());
+                    solutionStatement.setString(4,solution.getUniqueId().toString());
+                    solutionStatement.setString(5,solution.getUniqueId().toString());
+                    solutionStatement.setString(6,solution.getText());
+                    solutionStatement.setLong(7,solution.getDateTime());
+                    solutionStatement.setString(8,solution.getState().toString());
+                    solutionStatement.setString(9,solution.getAuthor().getUniqueId().toString());
+                    solutionStatement.setLong(10,issue.getUniqueId());
+                    solutionStatement.addBatch();
+                }
+            }
+
+            solutionStatement.executeBatch();
+
+            notificationStatement = connection.prepareStatement("UPDATE Notifications " +
+                    "SET title=?, content=?, sendTime=? " +
+                    "WHERE id = ?; " +
+                    "IF @@ROWCOUNT = 0 " +
+                    "BEGIN " +
+                    "    INSERT INTO Notifications VALUES(?,?,?,?,?,?); " +
+                    "END");
+
+            for(UserBean user : getAllUsers()) {
+                for(NotificationBean notification : user.getNotifications()) {
+                    notificationStatement.setString(1,notification.getTitle());
+                    notificationStatement.setString(2,notification.getComment());
+                    notificationStatement.setLong(3,notification.getPostTime());
+                    notificationStatement.setString(4,notification.getUniqueId().toString());
+                    notificationStatement.setString(5,notification.getUniqueId().toString());
+                    notificationStatement.setString(6,notification.getTitle());
+                    notificationStatement.setString(7,notification.getComment());
+                    notificationStatement.setLong(8,notification.getPostTime());
+                    notificationStatement.setString(9,user.getUniqueId().toString());
+                    notificationStatement.setLong(10,notification.getIssueBean().getUniqueId());
+                    notificationStatement.addBatch();
+                }
+            }
+
+            notificationStatement.executeBatch();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeSqlItem(userStatement);
+            closeSqlItem(issueStatement);
+            closeSqlItem(commentStatement);
+            closeSqlItem(solutionStatement);
+            closeSqlItem(notificationStatement);
+            closeSqlItem(connection);
+        }
     }
 
 }

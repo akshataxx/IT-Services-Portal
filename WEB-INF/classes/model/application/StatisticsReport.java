@@ -9,11 +9,10 @@ import java.time.temporal.ChronoUnit;
 
 public class StatisticsReport {
 
-
     public StatisticsReport() {
     }
 
-    public int getStressRate() {
+    public double getStressRate() {
         ITPortal portal = ITPortal.getInstance();
         int staffCount = 0;
         for(UserBean user : portal.getUserManager().getAllUsers()) {
@@ -27,10 +26,10 @@ public class StatisticsReport {
                 totalUnsolvedIncidents++;
         }
 
-        return (totalUnsolvedIncidents)/(staffCount*5);
+        return ((double) totalUnsolvedIncidents)/(staffCount*5);
     }
 
-    public CountMap<Category> unsolvedEachCategory() {
+    public CountMap<Category> getUnsolvedEachCategory() {
         CountMap<Category> countMap = new CountMap<>();
         ITPortal portal = ITPortal.getInstance();
         for(IssueBean issue : portal.getIssueManager().getAllIssues()) {
@@ -39,10 +38,12 @@ public class StatisticsReport {
                 countMap.increment(issue.getCategory().asMain());
             }
         }
+
         return countMap;
     }
 
-    public CountMap<Category> solvedEachCategoryLastDays(int days) {
+    public CountMap<Category> getSolvedEachCategoryLastDays() {
+        int days = 7;
         Preconditions.checkArgument(days>0);
         CountMap<Category> countMap = new CountMap<>();
         ITPortal portal = ITPortal.getInstance();

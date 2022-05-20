@@ -1,4 +1,5 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +18,31 @@
 </div>
 <h1>Statistics</h1>
 <hr>
-<h1>Stress Rate: ${requestScope.report.stressRate}</h1>
+<h1>Stress Rate</h1>
+<p><strong>Stress Rate: </strong><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${requestScope.report.stressRate}" /></p>
+<p>The stress rate is the (total unsolved incidents)/(total IT Staff * 5)</p>
+<h1>Total Resolved Incidents Per Category</h1>
+<c:forEach var="stat" items="${requestScope.solved}">
+    <c:choose>
+        <c:when test="${stat.key.subCategory}">
+            <p><c:out value=" - ${stat.key.sub.displayName}: ${stat.value}"/></p>
+        </c:when>
+        <c:otherwise>
+            <p><strong><c:out value="${stat.key.main.displayName}: "/>${stat.value}</strong></p>
+        </c:otherwise>
+    </c:choose>
+</c:forEach>
+
+<h1>Total Unsolved Incidents Per Category in last 7 days</h1>
+<c:forEach var="stat" items="${requestScope.unsolved}">
+    <c:choose>
+        <c:when test="${stat.key.subCategory}">
+            <p><c:out value=" - ${stat.key.sub.displayName}: ${stat.value}"/></p>
+        </c:when>
+        <c:otherwise>
+            <p><strong><c:out value="${stat.key.main.displayName}: "/>${stat.value}</strong></p>
+        </c:otherwise>
+    </c:choose>
+</c:forEach>
 </body>
-<footer>
-    &copy; All rights reserved , Copyright University of Newcastle-Callaghan 2022 <br/>
-    Akshata Dhuraji, Jacob Boyce, Wei Chen,  SENG2050, University of Newcastle
-</footer>
 </html>

@@ -1,9 +1,6 @@
 package model.domain;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Category {
 
@@ -49,8 +46,12 @@ public class Category {
         return "("+main+", "+sub+")";
     }
 
+    public boolean isSubCategory() {
+        return sub!=null;
+    }
+
     public static Collection<Category> values() {
-        Set<Category> values = new HashSet<>();
+        List<Category> values = new ArrayList<>();
         for(CategoryDefinition main : CategoryDefinition.values()) {
             values.add(new Category(main));
             for(CategoryDefinition sub : main.getSubCategories()) {
@@ -63,6 +64,7 @@ public class Category {
     public static Collection<Category> getValues() {
         return values();
     }
+
 
     @Override
     public int hashCode() {
