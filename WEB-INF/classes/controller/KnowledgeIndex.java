@@ -36,9 +36,9 @@ public class KnowledgeIndex extends ITPortalServlet {
 
     private boolean manageGroup(SortController controller, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String categoryOption = request.getParameter("group-category");
+            String categoryOption = request.getParameter("category");
             if(categoryOption != null && !categoryOption.equals("")) {
-                CategoryDefinition main = CategoryDefinition.valueOf(request.getParameter("category"));
+                CategoryDefinition main = CategoryDefinition.valueOf(categoryOption);
                 String sub = request.getParameter("subCategory");
                 if(sub==null || sub.equals("")) {
                     controller.groupCategory(new Category(main));

@@ -99,10 +99,10 @@
 		<legend>Report Details</legend>
 		<label for="title">Title <span class="required">*</span></label><br/>
 		<input type="text" class="input-field" id="title" name="title" placeholder="title"><br/>
-		<p id="title_err" class="err">Lorem Ipsum</p><br/>
+		<p id="title_err" class="err">Must be less than 100 characters</p><br/>
 		<label for="description">Description <span class="required">*</span></label><br/>
 		<textarea name="description" id="description" rows="10"></textarea>
-		<p id="description_err" class="err">Lorem Ipsum</p><br/>
+		<p id="description_err" class="err">Must be less than 2000 characters</p><br/>
 		<label for="category">Category <span class="required">*</span></label>
 		<select name="category" id="category">
 			<c:forEach var="category" items="${requestScope.enumBean.categoryValues}">
@@ -115,13 +115,9 @@
 		<script>
 			addDynamicSelect("category","subCategory", collections);
 		</script>
-		<p id="category_err" class="err">Lorem Ipsum</p><br/>
+		<p id="category_err" class="err"></p><br/>
 		<input type="submit" value="Report Issue"/> &emsp;
 	</fieldset>
 </form>
 </body>
-<footer>
-	&copy; All rights reserved , Copyright University of NewCastle-Callaghan 2022 <br/>
-	Akshata Dhuraji, Jacob Boyce, Wei Chen SENG2050, University of Newcastle
-</footer>
 </html>

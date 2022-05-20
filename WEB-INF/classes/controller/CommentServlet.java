@@ -43,8 +43,7 @@ public class CommentServlet extends ITPortalServlet {
         try {
             issue.commentOnIssue(new CommentBean(user,text.asString()));
         } catch (IllegalArgumentException | IllegalStateException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,e.getMessage());
-            return;
+            request.setAttribute("err",e.getMessage());
         }
 
         response.sendRedirect(request.getContextPath()+"/issue?id="+issue.getUniqueId()+"#comments");

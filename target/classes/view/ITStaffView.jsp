@@ -29,9 +29,9 @@
 		<p>Generate reports to see total resolved incidents within last 7 days, Total unresolved incident and Stress rate</p>
 	</div>
 </div>
-</body>
 <footer>
 	&copy; All rights reserved , Copyright University of Newcastle-Callaghan 2022 <br/>
 	Akshata Dhuraji, Jacob Boyce, Wei Chen SENG2050, University of NewCastle
 </footer>
+</body>
 </html>

@@ -45,10 +45,10 @@
 				<legend>Login Details</legend>
 				<label for="username">Name <span class="required">*</span></label><br/>
 				<input type="text" class="input-field" id="username" name="username" placeholder="Username"><br/>
-				<p id="username_err" class="err">Lorem Ipsum</p><br/>
+				<p id="username_err" class="err"></p><br/>
 				<label for="password">Password <span class="required">*</span></label><br/>
 				<input type="text" class="input-field" id="password" name="password" placeholder="Password"><br/>
-				<p id="password_err" class="err">Lorem Ipsum</p><br/>
+				<p id="password_err" class="err"></p><br/>
 				<input type="submit" value="Login"/> &emsp;
 				</fieldset>
 			</form>

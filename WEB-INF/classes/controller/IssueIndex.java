@@ -48,15 +48,15 @@ public class IssueIndex extends ITPortalServlet {
         try {
             String rejectedOption = request.getParameter("rejected-option");
             if(rejectedOption != null && !rejectedOption.equals("")) {
-                controller.groupRejected(RejectionGrouper.GroupOption.valueOf(request.getParameter("rejected-option")));
+                controller.groupRejected(RejectionGrouper.GroupOption.valueOf(rejectedOption));
             }
             String stateOption = request.getParameter("state-option");
             if(stateOption != null && !stateOption.equals("")) {
-                controller.groupState(IssueState.valueOf(request.getParameter("state-option")));
+                controller.groupState(IssueState.valueOf(stateOption));
             }
-            String categoryOption = request.getParameter("group-category");
+            String categoryOption = request.getParameter("category");
             if(categoryOption != null && !categoryOption.equals("")) {
-                CategoryDefinition main = CategoryDefinition.valueOf(request.getParameter("category"));
+                CategoryDefinition main = CategoryDefinition.valueOf(categoryOption);
                 String sub = request.getParameter("subCategory");
                 if(sub==null || sub.equals("")) {
                     controller.groupCategory(new Category(main));
