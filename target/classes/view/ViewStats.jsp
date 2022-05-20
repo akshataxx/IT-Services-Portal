@@ -21,7 +21,7 @@
 <h1>Stress Rate</h1>
 <p><strong>Stress Rate: </strong><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${requestScope.report.stressRate}" /></p>
 <p>The stress rate is the (total unsolved incidents)/(total IT Staff * 5)</p>
-<h1>Total Resolved Incidents Per Category</h1>
+<h1>Total Resolved Incidents Per Category In Last 7 Days</h1>
 <c:forEach var="stat" items="${requestScope.solved}">
     <c:choose>
         <c:when test="${stat.key.subCategory}">
@@ -33,7 +33,7 @@
     </c:choose>
 </c:forEach>
 
-<h1>Total Unsolved Incidents Per Category in last 7 days</h1>
+<h1>Total Unsolved Incidents Per Category</h1>
 <c:forEach var="stat" items="${requestScope.unsolved}">
     <c:choose>
         <c:when test="${stat.key.subCategory}">

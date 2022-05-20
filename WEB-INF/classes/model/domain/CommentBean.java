@@ -5,7 +5,7 @@ import util.Preconditions;
 import java.util.Date;
 import java.util.UUID;
 
-public class CommentBean implements DatabaseSerializable, TextElement {
+public class CommentBean implements DatabaseSerializable {
 
     private final UUID uniqueId;
     private final UserBean userBean;
@@ -31,12 +31,10 @@ public class CommentBean implements DatabaseSerializable, TextElement {
         return userBean;
     }
 
-    @Override
     public long getDateTime() {
         return timePosted;
     }
 
-    @Override
     public Date getDate() {
         return new Date(timePosted);
     }
@@ -45,7 +43,6 @@ public class CommentBean implements DatabaseSerializable, TextElement {
         return comment;
     }
 
-    @Override
     public void setText(String text) {
         Preconditions.validateLength(text,1,500);
         Preconditions.validateNotNull(text);

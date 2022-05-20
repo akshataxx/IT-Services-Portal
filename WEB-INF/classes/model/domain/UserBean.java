@@ -4,6 +4,11 @@ import util.Preconditions;
 
 import java.util.*;
 
+/**
+ * Represents a user in the system. A user can either be an {@link UserRole#USER} or {@link UserRole#IT_STAFF}. The user has several
+ * attributes. Notify a user with {@link #addUnreadNotification(NotificationBean)}. Each user has several issues {@link #getIssues()}. Users
+ * can open, comment and accept solutions to their issues.
+ */
 public class UserBean implements DatabaseSerializable {
 
 	private final UUID uniqueId;
@@ -18,13 +23,16 @@ public class UserBean implements DatabaseSerializable {
 	private final Set<IssueBean> issues;
 	private int unreadNotifications;
 
+	//create user
 	public UserBean(UserRole role, String firstName, String lastName, String username, String password) {
+		//make sure database contraints are met
 		Preconditions.validateNotNull(role);
 		Preconditions.validateNotNull(username);
 		Preconditions.validateNotNull(password);
 		Preconditions.validateNotNull(firstName);
 		Preconditions.validateNotNull(lastName);
 
+		//new unique id
 		this.uniqueId = UUID.randomUUID();
 		setUsername(username);
 		setPassword(password);
@@ -39,6 +47,7 @@ public class UserBean implements DatabaseSerializable {
 		unreadNotifications = 0;
 	}
 
+	//serialize user from database
 	private UserBean(UUID uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, int unreadNotifications, UserRole role) {
 		this.uniqueId = uniqueId;
 		this.firstName = firstName;
@@ -53,6 +62,7 @@ public class UserBean implements DatabaseSerializable {
 		this.issues = new HashSet<>();
 	}
 
+	//user getters
 	public String getFirstName() {
 		return firstName;
 	}
@@ -77,6 +87,7 @@ public class UserBean implements DatabaseSerializable {
 		return contactNo;
 	}
 
+	//user setters, make sure database preconditions are met
 	public void setFirstName(String firstName) {
 		Preconditions.validateLength(firstName,35);
 		Preconditions.validateNotNull(firstName);
@@ -123,11 +134,13 @@ public class UserBean implements DatabaseSerializable {
 		return Collections.unmodifiableList(notifications);
 	}
 
+	//add a notification for the user
 	public void addNotification(NotificationBean notification) {
 		Objects.requireNonNull(notification);
 		this.notifications.add(notification);
 	}
 
+	//add a notification, set it as unread.
 	public void addUnreadNotification(NotificationBean notificationBean) {
 		addNotification(notificationBean);
 		unreadNotifications++;
@@ -137,10 +150,12 @@ public class UserBean implements DatabaseSerializable {
 		return unreadNotifications;
 	}
 
+	//sets unread notifications to 0
 	public void readNotifications() {
 		unreadNotifications = 0;
 	}
 
+	//return a notification a user has
 	public NotificationBean getNotification(UUID uuid) {
 		for(NotificationBean notification : notifications) {
 			if(notification.getUniqueId().equals(uuid))
@@ -157,6 +172,7 @@ public class UserBean implements DatabaseSerializable {
 		this.issues.add(issueBean);
 	}
 
+	//Serialize a user from database attributes.
 	public static UserBean serialize(String uniqueId, String firstName, String surname, String email, String username, String password, String contactNo, int unreadNotifications, String role) throws SerializationException {
 		UUID uuid;
 		try {

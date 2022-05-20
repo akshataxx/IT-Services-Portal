@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
-public class SolutionBean implements DatabaseSerializable, TextElement {
+/**
+ * Represents the solution to an {@link IssueBean}
+ */
+public class SolutionBean implements DatabaseSerializable {
 
     private final UUID uniqueId;
     private final long solutionDate;
@@ -15,6 +18,7 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
     private final UserBean staffMember;
     private final IssueBean issue;
 
+    //create solution
     public SolutionBean(String resolutionDetails, UserBean staffMember, IssueBean issue) {
         this.uniqueId = UUID.randomUUID();
         if(!staffMember.getRole().equals(UserRole.IT_STAFF))
@@ -35,22 +39,20 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         this.issue = issue;
     }
 
-    @Override
+    //getters
     public long getDateTime() {
         return solutionDate;
     }
 
-    @Override
     public Date getDate() {
         return new Date(solutionDate);
     }
 
-    @Override
     public String getText() {
         return resolutionDetails;
     }
 
-    @Override
+    //setters, make sure to keep with database constraints
     public void setText(String text) {
         Preconditions.validateLength(text,2000);
         Preconditions.validateNotNull(text);
@@ -70,11 +72,11 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         return uniqueId;
     }
 
-    @Override
     public UserBean getAuthor() {
         return staffMember;
     }
 
+    //accepts this solution, the issue will now be resolved
     public void acceptSolution() {
         if(!getState().equals(SolutionState.WAITING))
             throw new IllegalStateException("Issue state has already been decided");
@@ -84,6 +86,7 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         issue.setResolveDate(System.currentTimeMillis());
     }
 
+    //reject the issue, it will now be in progress again, notify the it staff
     public void rejectSolution(String notificationTitle, String notificationComment) {
         if(issue.isResolved())
             throw new IllegalStateException("Issue has already been resolved");
@@ -96,6 +99,7 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
         this.staffMember.addUnreadNotification(new NotificationBean(notificationTitle,notificationComment,issue));
     }
 
+    //serialize the solution from the database
     public static SolutionBean serialize(String uniqueId, long solutionDate, String resolutionDetails, String state, UserBean staffMember, IssueBean issue) throws SerializationException {
         UUID uuid;
         try {
@@ -104,6 +108,7 @@ public class SolutionBean implements DatabaseSerializable, TextElement {
             throw new SerializationException("Bad UUID '"+uniqueId+"'",e);
         }
 
+        //get state
         SolutionState solutionState = null;
         try {
             solutionState = SolutionState.valueOf(state);

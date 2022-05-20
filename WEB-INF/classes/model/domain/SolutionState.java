@@ -1,5 +1,6 @@
 package model.domain;
 
+//represents the state a solution of an issue can be
 public enum SolutionState {
     WAITING("Waiting"),
     REJECTED("Rejected"),

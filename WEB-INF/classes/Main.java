@@ -17,27 +17,6 @@ import java.util.UUID;
 public class Main {
 
     public static void main(String[] args) {
-        /**
-         * TODO
-         *   - Notifications
-         *   - Statistics
-         *   - Knowledge Base
-         *   - Knowledge Article
-         *   - Save Database
-         *
-         *  - IT View for Issue
-         *  - Add Solution
-         *  - Accept/Reject Solution
-         *  - Set to waiting for reporter
-         *
-         *  Suggestions
-         *    - Make it look better
-         *    - IssueIndex, have things spawn as nothing, then you just have the select rather than the checkboxes
-         *    - Have a table for viewing the issues in list
-         *    - Have solutions and comments be a little kinder when multiple users are working simultaneously
-         */
-        //categoryExample();
-        //issueExample();
 
         System.out.println(System.currentTimeMillis());
         try {

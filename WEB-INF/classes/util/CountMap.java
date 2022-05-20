@@ -4,6 +4,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * CountMap is a utility class that acts a dictionary for a key to a value that is being counted. Each key
+ * has an integer attached to it. {@link #add(Object, int)} to add for the key. {@link #increment(Object)} to increment
+ * for the value.
+ *
+ * @param <T>
+ */
 public class CountMap<T> {
 
     private final Map<T,Integer> countMap;
@@ -17,16 +24,19 @@ public class CountMap<T> {
     }
 
     public void add(T t, int amount) {
+        //if it contains then add the amount
         if(countMap.containsKey(t)) {
             int curr = countMap.get(t);
             curr += amount;
             countMap.put(t,curr);
         } else {
+            //otherwise this is new, set the amount
             countMap.put(t,amount);
         }
     }
 
     public int get(T t) {
+        //get the count of the key
         Integer value = countMap.get(t);
         if(value==null)
             return 0;

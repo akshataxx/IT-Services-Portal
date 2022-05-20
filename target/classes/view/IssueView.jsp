@@ -157,7 +157,7 @@
                 <label for="solution">Resolution Details <span class="required">*</span></label><br/>
                 <input type="hidden" name="issue" value="<c:out value="${requestScope.issue.uniqueId}"/>">
                 <textarea id="solution" name="solution" rows="5"></textarea>
-                <p id="solution_err" class="err">Lorem Ipsum</p>
+                <p id="solution_err" class="err">Must be less than 2000 characters</p>
                 <input type="submit" value="Post Solution"/>
             </fieldset>
         </form>
@@ -181,7 +181,7 @@
             <label for="text">Comment <span class="required">*</span></label><br/>
             <input type="hidden" name="issue" value="<c:out value="${requestScope.issue.uniqueId}"/>">
             <textarea id="text" name="text" rows="5"></textarea>
-            <p id="text_err" class="err">Lorem Ipsum</p>
+            <p id="text_err" class="err">Must be less than 500 characters</p>
             <input type="submit" value="Post Comment"/>
         </fieldset>
     </form>
